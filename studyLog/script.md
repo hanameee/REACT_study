@@ -474,3 +474,86 @@ React 가 DOM을 update 하게끔 만드는 것은 딱 2가지이다.
 
 만약 저 2개가 변경되면 react는 watch 하고 있다가 기존에 이미 render 된 DOM과 비교해 변경된 사항을 reflect 하여 new state & props를 update한다!
 
+
+
+### 43)
+
+`useState`hook을 사용해서 functional component 에서도 state를 manage 할 수 있다.
+
+```javascript
+const App = props => {
+    //useState는 항상 2개의 element 를 리턴한다. 이전 class based에서 this.state가 하던 역할을 이젠 personsState가 한다!
+    //setPersonsstate는 우리가 new state 를 설정할 수 있도로 한다
+    const [personsState, setPersonsState] = useState({
+        persons: [
+            { name: "Max", age: 28 },
+            { name: "Hannah", age: 25 },
+            { name: "Jeongho", age: 26 }
+        ]
+    });
+
+    const switchNameHandler = () => {
+        //이제 this.setState 가 아닌 setPersonsState 임!
+        setPersonsState({
+            persons: [
+                { name: "Tada!", age: 28 },
+                { name: "Hannah", age: 25 },
+                { name: "Jeongho", age: 100 }
+            ]
+        });
+    };
+    return (
+        <div className="App">
+            <button onClick={switchNameHandler}>Switch Name</button>
+            <Person
+                name={personsState.persons[0].name}
+                age={personsState.persons[0].age}
+            />
+            <Person
+                name={personsState.persons[1].name}
+                age={personsState.persons[1].age}
+            />
+            <Person
+                name={personsState.persons[2].name}
+                age={personsState.persons[2].age}
+            >
+                My Hobbies: Hannah
+            </Person>
+        </div>
+    );
+};
+```
+
+
+
+`useState`는 항상 2개의 element 를 리턴한다. 이전 class based에서 this.state가 하던 역할을 이젠 personsState가 한다!
+
+`setPersonsstate`는 우리가 new state 를 설정할 수 있도록 한다
+
+
+
+### 45)
+
+Passing Method References Btw Components
+
+
+
+### 46)
+
+Adding Two Way Binding
+
+
+
+### 47,48)
+
+Adding Styling with Stylesheets
+
+Styling implement 하는 방법은 2가지가 있다!
+
+1) CSS stylesheet로 하는 법
+
+global이 된다
+
+2) Inline styles로 하는 법
+
+inline을 하면 styling이 scoped to the component 되나, css
