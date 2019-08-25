@@ -26,6 +26,19 @@ React.js is a modern Javascript which you could use to make SPA(Single Page Appl
 
 
 
+API = Application Programming Interface
+
+APIs allow applications to communicate with one another. API is not the database or even the server, it is the **code that governs the access point for the server**.
+
+사람들이 API 라고 말할때, 실제로는 publicly available web-based API that returns data (likely in JSON or XML) 을 의미한다. 
+
+Web-based APIs return data in response to a request made by a client. The allow us to go get data from outside sources.
+
+1. We can send an API a request detailing the information we want.
+2. APIs allow our sites to alter data on other applications, too. For instance, you’ve probably seen “Share on Facebook” or “Share on Twitter” buttons on miscellaneous websites. When/if you click one of these buttons, the site you’re visiting can communicate with your Facebook or Twitter account, and alter its data by adding new status or tweet.
+
+
+
 ## Django?
 
 Django is a back-end web framework for developing web applications.
@@ -59,6 +72,10 @@ To get the data in the React, you just need API’s and that api’s could be in
 
 
 ## Webpack?
+
+
+
+## Browserify?
 
 
 

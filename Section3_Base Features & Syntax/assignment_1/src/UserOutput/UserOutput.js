@@ -1,14 +1,14 @@
 //hold 2 paragraphs
+import React from "react";
+import "./UserOutput.css";
 
-import React from 'react';
-
-const userOutput = (props) => {
+const userOutput = props => {
     return (
-        <div className = "UserOutput">
-        <p>Hi there :D my name is</p>
-        <p onClick={props.click}>name: {props.name}</p>
+        <div id={props.id} className="UserOutput" onClick={props.clicked}>
+            <p className="head">[User #{props.id} Information]</p>
+            <p>- name: {props.name}</p>
         </div>
-    )
-}
+    );
+};
 
 export default userOutput;

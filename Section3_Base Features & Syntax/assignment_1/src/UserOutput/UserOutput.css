@@ -1,0 +1,12 @@
+.UserOutput {
+    width: 30%;
+    margin: 20px auto;
+    background-color: rgb(250, 164, 178);
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+}
+
+.head {
+    font-weight: bold;
+    color: rgb(46, 46, 46);
+}
