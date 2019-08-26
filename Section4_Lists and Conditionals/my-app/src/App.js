@@ -66,25 +66,18 @@ class App extends Component {
     //state는 reserved word 임
     state = {
         persons: [
-            { name: "Max", age: 28 },
-            { name: "Hannah", age: 25 },
-            { name: "Jeongho", age: 26 }
+            { id: "1", name: "Max", age: 28 },
+            { id: "2", name: "Hannah", age: 25 },
+            { id: "3", name: "Jeongho", age: 26 }
         ],
         showPersons: false
     };
 
-    switchNameHandler = newName => {
-        // console.log('Was clicked!');
-        //꼭 Arrow function을 사용해야만 this가 이 App class를 가르킨다!
-        // Don't do this! this.state.persons[0].name  = 'Tada~!';
-        this.setState({
-            persons: [
-                { name: "Max", age: 28 },
-                { name: newName, age: 25 },
-                { name: "Jeongho", age: 26 }
-            ]
-        });
-    };
+    deletePersonHandler = (personIndex) => {
+        const persons = [...this.state.persons];
+        persons.splice(personIndex,1);
+        this.setState({persons: persons});
+    }
 
     nameChangedHandler = event => {
         this.setState({
@@ -103,6 +96,7 @@ class App extends Component {
             showPersons: !doesShow
         });
     };
+
     render() {
         const style = {
             backgroundColor: "white",
@@ -118,22 +112,13 @@ class App extends Component {
         if (this.state.showPersons) {
             persons = (
                 <div>
-                    <Person
-                        name={this.state.persons[0].name}
-                        age={this.state.persons[0].age}
-                    />
-                    <Person
-                        name={this.state.persons[1].name}
-                        age={this.state.persons[1].age}
-                        click={this.switchNameHandler.bind(this, "Yay!")}
-                        changed={this.nameChangedHandler}
-                    />
-                    <Person
-                        name={this.state.persons[2].name}
-                        age={this.state.persons[2].age}
-                    >
-                        My Hobbies: Hannah
-                    </Person>
+                    {this.state.persons.map((person, index) => {
+                        return <Person 
+                        click={() => this.deletePersonHandler(index)}
+                        name={person.name} 
+                        age={person.age}
+                        key={person.id}/>; 
+                    })}
                 </div>
             );
         }

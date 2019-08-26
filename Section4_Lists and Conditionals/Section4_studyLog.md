@@ -141,3 +141,191 @@ React에서 update를 trigger 하는 것은 state change임. state가 바뀌면 
 
 
 52번에서 한 것보다, 53번에서 한 것이 return 내부의 template를 clean 하게 유지하면서, conditional content를 output 할 수 있는 (일종의 outsourcing?) 더 선호되는 방법이다.
+
+
+
+### 54)
+
+지금까지 우리는 Persons 를 hardcode 했다. inflexible 함!
+
+```javascript
+<Person
+    name={this.state.persons[0].name}
+    age={this.state.persons[0].age}
+/>
+```
+
+만약 persons 에 하나를 추가하거나 삭제했거나 하면 모든게 break 될 거니까!
+
+따라서 어떻게 arrays 를 output 하고, interact, update, change 할 수 있는지 알아볼 것임.
+
+
+
+### 55)
+
+위에서 conditional content 로 render 내부에 작성한 persons 변수 내의 JSX 코드를 바꿔보자!
+
+vanila JS 로 작성할 거니까, single curly braces 내부에 작성.
+
+```javascript
+{this.state.persons.map(person => {
+
+})}
+```
+
+`map` 을 활용해서 persons array 내부 객체 하나하나에 대해 작업할 것임! 우리가 JSX 코드 내부에 작성하므로, react는 map 이 리턴하는 array의 원소 하나하나를 DOM에 render 할 것임. (if it's valid jsx)
+
+그럼 우리가 할 것은 persons array의 원소를 각각 valid JSX 형태로 mapping 해주는 것!
+
+```javascript
+{this.state.persons.map(person => {
+    return <Person name = {person.name} age = {person.age} />
+})}
+```
+
+위의 방법이 React 에서 주로 사용하는 방법이다.
+
+
+
+### 56)
+
+어떻게 array를 manipulate 하는지를 알아보자.
+
+`Person.js` 에서 person component는 이렇게 정의되어 있다
+
+```javascript
+const person = (props) => {
+    return (
+        <div className = "Person">
+            <p onClick={props.click}>I'm {props.name} and I am {props.age} years old!</p>
+            <p>{props.children}</p>
+            <input type="text" onChange={props.changed} value={props.name}/>
+            {/* <input type="text" onChange={props.changed}/> */}
+        </div>
+    );
+}
+```
+
+Person component의 첫번째 <p> 가 클릭되었을 때 props.click이 실행돼는데, 난 이때 deletePersonHandler 라는 메소드를 실행시킬거임!
+
+새롭게 메소드를 만들어주고 아래 App.js에서 persons state를 mapping 할 때 return 하는 JSX 파일에 click props를 만들어 deletePersonHandler의 참조값을 할당해준다.
+
+```javascript
+{this.state.persons.map(person => {
+  return <Person name={person.name} age={person.age} click={this.deletePersonHandler}/>;
+})}
+```
+
+
+
+그럼 deletePerson 할 때 내가 지금 지우고 싶은 이 element가 뭔지 어떻게 알 수 있을까!
+
+다행히도 map은 2가지 인자를 받는다. (1) 내가 지금 작업하는 element와, (2) 그 element의 index 값!
+
+```javascript
+{this.state.persons.map((person, index) => {
+  return <Person
+  click={() => this.deletePersonHandler(index)}
+  name={person.name} 
+  age={person.age}/>;
+})}
+```
+
+이렇게 map 에서 index를 넘겨주고, click에서도 deletePersonHandler에게 index를 넘겨준다.
+
+```javascript
+deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex,1);
+    this.setState({persons: persons});
+}
+```
+
+그리고 deletePersonHandler가 personIndex를 받아, persons가 참조값을 가르키고 있는 this.state.persons array 객체에서 딱 그 Index 원소만 잘라낸 후 (splice) setState를 통해 persons를 변경된 값으로 할당해준다!
+
+하지만 이 approach는 문제점이 있다. 다음 강의에서 ~_~
+
+
+
+### 57)
+
+56번에서 택한 방식의 문제는 JS에서 object와 array는 reference type 이기에 
+
+```javascript
+const persons = this.state.persons;
+```
+
+요렇게 접근하면 persons는 실제 original persons state object 의 참조값(pointer)을 참조하게 된다.
+
+```javascript
+persons.splice(personIndex,1);
+```
+
+요렇게 splice를 해버리면 original object를 mutate 하는거라서 좋은 방법이 아니다. 복사본을 만드는 것이 좀 더 바람직한 방법! 
+
+이를 위해 (1)splice 대신 slice를 사용해 array를 복사해오거나 (2)spread 연산자를 사용할 수 있다.
+
+(1) slice 사용
+
+```javascript
+const persons = this.state.persons.slice();
+//persons에 원본 객체의 복사본이 담긴다
+persons.splice(personIndex,1);
+//원본이 아닌 복사본을 조작!
+```
+
+(2) spread 연산자 사용
+
+```javascript
+const persons = [...this.state.persons]
+persons.splice(personIndex,1);
+```
+
+spread 연산자가 더 최신 문법이라 (2)를 더 많이 사용할 것임.
+
+이렇게 immutable fashion 으로 (without mutating original state) update 하는 것이 항상중요하다!
+
+
+
+### 58)
+
+지금 App 을 돌려보면 `Warning: Each child in a list should have a unique "key" prop.` 에러가 나온다. 이걸 해결해보자!
+
+Key prop 이란? 우리가 lists of data를 rendering 할 때 꼭 추가해줘야 하는 important property 이다! key property 는 React 가 list를 효과적으로 update 할 수 있게 도와준다!
+
+Key property는 custom component이든, default HTML element 이든 list를 통해 render을 한다면 React가 기본적으로 찾게 된다. 
+
+
+
+그럼, 왜 필요한걸까?
+
+React는 virtual DOM을 통해 바뀐 부분에 대해서만 re-render을 진행하는데, list의 요소들이 각각 key prop을 가지고 있지 않다면 전체 list를 re-render 하게 되고 이건 나중에 list가 길어졌을때 큰 비효율을 초래!
+
+```javascript
+    state = {
+        persons: [
+            { id: "1", name: "Max", age: 28 },
+            { id: "2", name: "Hannah", age: 25 },
+            { id: "3", name: "Jeongho", age: 26 }
+        ],
+        showPersons: false
+    };
+```
+
+
+
+```javascript
+            persons = (
+                <div>
+                    {this.state.persons.map((person, index) => {
+                        return <Person 
+                        click={() => this.deletePersonHandler(index)}
+                        name={person.name} 
+                        age={person.age}
+                        key={person.id}/>; 
+                    })}
+                </div>
+            );
+```
+
+이렇게 id prop을 state와 persons component에 각각 추가해준다!
