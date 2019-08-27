@@ -8,9 +8,9 @@ class App extends Component {
     //state는 reserved word 임
     state = {
         persons: [
-            { id: "1", name: "Max", age: 28 },
-            { id: "2", name: "Hannah", age: 25 },
-            { id: "3", name: "Jeongho", age: 26 }
+            { id: "001", name: "Max", age: 28 },
+            { id: "002", name: "Hannah", age: 25 },
+            { id: "003", name: "Jeongho", age: 26 }
         ],
         showPersons: false
     };
@@ -21,15 +21,26 @@ class App extends Component {
         this.setState({persons: persons});
     }
 
-    nameChangedHandler = event => {
-        this.setState({
-            persons: [
-                { name: "Max", age: 28 },
-                //target은 input element를 가르키고, value는 그 input element의 값!
-                { name: event.target.value, age: 25 },
-                { name: "Jeongho", age: 100 }
-            ]
+    nameChangedHandler = (event, id) => {
+        const personIndex = this.state.persons.findIndex(p => {
+            return p.id === id;
         });
+
+        const person = {
+            //this.state.persons[personIndex] 라고 하면 원래 object를 mutate하는 거니까!
+            //spread operator을 사용해서 항상 복사본으로, Immutable 하게.
+            ...this.state.persons[personIndex]
+        }
+
+        //alternative approach - depreciated
+        // const person = Object.assign({}, this.state.persons[personIndex]);
+        
+        person.name = event.target.value;
+
+        const persons = [...this.state.persons];
+        //변경된 person을 복사본 persons array에 update 해준다
+        persons[personIndex] = person;
+        this.setState( {persons: persons} );
     };
 
     togglePersonsHandler = () => {
@@ -59,7 +70,8 @@ class App extends Component {
                         click={() => this.deletePersonHandler(index)}
                         name={person.name} 
                         age={person.age}
-                        key={person.id}/>; 
+                        key={person.id}
+                        changed={(event) => this.nameChangedHandler(event, person.id)}/>; 
                     })}
                 </div>
             );

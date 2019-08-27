@@ -329,3 +329,79 @@ React는 virtual DOM을 통해 바뀐 부분에 대해서만 re-render을 진행
 ```
 
 이렇게 id prop을 state와 persons component에 각각 추가해준다!
+
+
+
+### 59)
+
+이제 list 도 있고, 진짜 dynamic content가 되었으니, person component의 onChange에 걸린 changed prop에 state를 update하는 eventListener이나 method를 연결해주자!
+
+App.js에 Person JSX 코드에 changed prop을 추가해준다
+
+```javascript
+persons = (
+    <div>
+        {this.state.persons.map((person, index) => {
+            return <Person 
+            click={() => this.deletePersonHandler(index)}
+            name={person.name} 
+            age={person.age}
+            key={person.id}
+						//map 안이니까 person에 접근 가능
+            changed={(event) => this.nameChangedHandler(event, person.id)}/>;
+        })}
+    </div>
+);
+```
+
+그리고 nameChangedHandler 역시 수정!
+
+```javascript
+nameChangedHandler = (event, id) => {
+  	//findIndex는 주어진 판별함수를 만족하는 배열의 첫번째 요소에 대한 인덱스를 반환함
+    const personIndex = this.state.persons.findIndex(p => {
+        return p.id === id;
+    });
+
+    const person = {
+        //this.state.persons[personIndex] 라고 하면 원래 object를 mutate하는 거니까 spread operator을 사용해서 항상 복사본으로, Immutable 하게 
+        ...this.state.persons[personIndex]
+    }
+
+    //alternative approach - depreciated
+    // const person = Object.assign({}, this.state.persons[personIndex]);
+    
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    //변경된 person을 복사본 persons array에 update 해준다
+    persons[personIndex] = person;
+    this.setState( {persons: persons} );
+};
+```
+
+1.event와 id 2개의 argument를 받아 persons array 중 넘겨받은 id값을 만족하는 요소의 index를 personIndex에 저장한다.
+
+2.person에 persons array 복사본의 personIndex에 해당하는 요소를 저장한다
+
+3.person의 이름을 input으로 입력받은 값으로 변경한다
+
+4.setState에 사용하기 위해 기존 persons array의 복사본 persons를 만든다
+
+5.새로운 persons의 해당 index에 name이 input 값으로 업데이트된 person을 넣어준다
+
+6.setState로 persons를 업데이트한다
+
+
+
+이제 input이 입력될 때마다 nameChangedHandler이 실행되면서 변경된 배열요소만 re-rendering 될 것임!
+
+
+
+### 60)
+
+1. content를 conditional 하게 output 하는 방법을 배웠다. JS 문법을 이용해서! 사전에 변수에 null을 할당해두고, if 문 내부에 JSX variable을 해당 변수에 할당해 if 조건문이 참이면 변수에 JSX가 할당되고, 아니면 null로 남아있도록!
+2. List를 동적으로 output 하는 방법. map function은 현재 함수를 실행하는 원소도 argument로 제공하지만, 그 원소의 index도 두번째 argument로 제공한다는 점! 이 index를 이용해 remove 를 구현했었다.
+3. List의 경우 react가 효과적으로 update를 할 수 있도록 key prop을 꼭 추가해줘야 한다는 점
+4. List 원소 중 무언가 event가 일어나는 친구에게만 특정 함수를 실행시키는 법에 대해서도 배웠다. (nameChangedHandler) 
+
