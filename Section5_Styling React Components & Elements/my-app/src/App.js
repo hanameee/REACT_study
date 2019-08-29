@@ -78,8 +78,22 @@ class App extends Component {
 
             style.backgroundColor = "red";
         }
+
+        const classes = [];
+
+        if(this.state.persons.length <= 2) {
+            classes.push("red");
+        }
+
+        if(this.state.persons.length <= 1) {
+            classes.push("bold");
+        }
+
+        
+
         return (
-            <div className="App">
+            <div className = "App">
+                <p className = {classes.join(" ")}>I change my class depending on persons array length!</p>
                 <button style={style} onClick={this.togglePersonsHandler}>
                     Toggle Namecard
                 </button>
