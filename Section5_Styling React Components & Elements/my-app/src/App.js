@@ -2,6 +2,7 @@ import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
 import "./App.css";
 import Person from "./Person/Person";
+import Radium, { StyleRoot } from "radium";
 
 // 원래 예제에서 사용했던 classed based component
 class App extends Component {
@@ -15,11 +16,11 @@ class App extends Component {
         showPersons: false
     };
 
-    deletePersonHandler = (personIndex) => {
+    deletePersonHandler = personIndex => {
         const persons = [...this.state.persons];
-        persons.splice(personIndex,1);
-        this.setState({persons: persons});
-    }
+        persons.splice(personIndex, 1);
+        this.setState({ persons: persons });
+    };
 
     nameChangedHandler = (event, id) => {
         const personIndex = this.state.persons.findIndex(p => {
@@ -30,17 +31,17 @@ class App extends Component {
             //this.state.persons[personIndex] 라고 하면 원래 object를 mutate하는 거니까!
             //spread operator을 사용해서 항상 복사본으로, Immutable 하게.
             ...this.state.persons[personIndex]
-        }
+        };
 
         //alternative approach - depreciated
         // const person = Object.assign({}, this.state.persons[personIndex]);
-        
+
         person.name = event.target.value;
 
         const persons = [...this.state.persons];
         //변경된 person을 복사본 persons array에 update 해준다
         persons[personIndex] = person;
-        this.setState( {persons: persons} );
+        this.setState({ persons: persons });
     };
 
     togglePersonsHandler = () => {
@@ -57,7 +58,11 @@ class App extends Component {
             font: "inherit",
             padding: "4px",
             margin: "10px",
-            cursor: "pointer"
+            cursor: "pointer",
+            ":hover": {
+                backgroundColor: "lightgreen",
+                color: "black"
+            }
         };
 
         let persons = null;
@@ -66,39 +71,50 @@ class App extends Component {
             persons = (
                 <div>
                     {this.state.persons.map((person, index) => {
-                        return <Person 
-                        click={() => this.deletePersonHandler(index)}
-                        name={person.name} 
-                        age={person.age}
-                        key={person.id}
-                        changed={(event) => this.nameChangedHandler(event, person.id)}/>; 
+                        return (
+                            <Person
+                                click={() => this.deletePersonHandler(index)}
+                                name={person.name}
+                                age={person.age}
+                                key={person.id}
+                                changed={event =>
+                                    this.nameChangedHandler(event, person.id)
+                                }
+                            />
+                        );
                     })}
                 </div>
             );
 
             style.backgroundColor = "red";
+            style[":hover"] = {
+                backgroundColor: "salmon",
+                color: "black"
+            };
         }
 
         const classes = [];
 
-        if(this.state.persons.length <= 2) {
+        if (this.state.persons.length <= 2) {
             classes.push("red");
         }
 
-        if(this.state.persons.length <= 1) {
+        if (this.state.persons.length <= 1) {
             classes.push("bold");
         }
 
-        
-
         return (
-            <div className = "App">
-                <p className = {classes.join(" ")}>I change my class depending on persons array length!</p>
-                <button style={style} onClick={this.togglePersonsHandler}>
-                    Toggle Namecard
-                </button>
-                {persons}
-            </div>
+            <StyleRoot>
+                <div className="App">
+                    <p className={classes.join(" ")}>
+                        I change my class depending on persons array length!
+                    </p>
+                    <button style={style} onClick={this.togglePersonsHandler}>
+                        Toggle Namecard
+                    </button>
+                    {persons}
+                </div>
+            </StyleRoot>
         );
     }
 }
@@ -110,4 +126,4 @@ class App extends Component {
 //   }
 // }
 
-export default App;
+export default Radium(App);
