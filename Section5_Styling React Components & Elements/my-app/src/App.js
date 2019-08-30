@@ -1,6 +1,6 @@
 import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
-import "./App.css";
+import styles from "./App.module.css";
 import Person from "./Person/Person";
 
 // 원래 예제에서 사용했던 classed based component
@@ -51,16 +51,9 @@ class App extends Component {
     };
 
     render() {
-        const style = {
-            backgroundColor: "green",
-            color: "white",
-            font: "inherit",
-            padding: "4px",
-            margin: "10px",
-            cursor: "pointer",
-        };
 
         let persons = null;
+        let btnClass = "";
 
         if (this.state.showPersons) {
             persons = (
@@ -81,25 +74,26 @@ class App extends Component {
                 </div>
             );
 
-            style.backgroundColor = "red";
+            btnClass = styles.Red
         }
 
         const classes = [];
 
+
         if (this.state.persons.length <= 2) {
-            classes.push("red");
+            classes.push(styles.red);
         }
 
         if (this.state.persons.length <= 1) {
-            classes.push("bold");
+            classes.push(styles.bold);
         }
 
         return (
-                <div className="App">
+                <div className={styles.App}>
                     <p className={classes.join(" ")}>
                         I change my class depending on persons array length!
                     </p>
-                    <button style={style} onClick={this.togglePersonsHandler}>
+                    <button onClick={this.togglePersonsHandler} className={btnClass}>
                         Toggle Namecard
                     </button>
                     {persons}
