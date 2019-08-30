@@ -2,7 +2,6 @@ import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
 import "./App.css";
 import Person from "./Person/Person";
-import Radium, { StyleRoot } from "radium";
 
 // 원래 예제에서 사용했던 classed based component
 class App extends Component {
@@ -59,10 +58,6 @@ class App extends Component {
             padding: "4px",
             margin: "10px",
             cursor: "pointer",
-            ":hover": {
-                backgroundColor: "lightgreen",
-                color: "black"
-            }
         };
 
         let persons = null;
@@ -87,10 +82,6 @@ class App extends Component {
             );
 
             style.backgroundColor = "red";
-            style[":hover"] = {
-                backgroundColor: "salmon",
-                color: "black"
-            };
         }
 
         const classes = [];
@@ -104,7 +95,6 @@ class App extends Component {
         }
 
         return (
-            <StyleRoot>
                 <div className="App">
                     <p className={classes.join(" ")}>
                         I change my class depending on persons array length!
@@ -114,7 +104,6 @@ class App extends Component {
                     </button>
                     {persons}
                 </div>
-            </StyleRoot>
         );
     }
 }
@@ -126,4 +115,4 @@ class App extends Component {
 //   }
 // }
 
-export default Radium(App);
+export default App;
