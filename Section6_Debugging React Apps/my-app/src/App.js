@@ -2,6 +2,7 @@ import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
 import styles from "./App.module.css";
 import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 // 원래 예제에서 사용했던 classed based component
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
     nameChangedHandler = (event, id) => {
         const personIndex = this.state.persons.findIndex(p => {
             return p.id === id;
+            // return p.userId === id;
         });
 
         const person = {
@@ -35,8 +37,7 @@ class App extends Component {
         //alternative approach - depreciated
         // const person = Object.assign({}, this.state.persons[personIndex]);
 
-        // person.name = event.target.value;
-        person.name = event.input.value;
+        person.name = event.target.value;
 
         const persons = [...this.state.persons];
         //변경된 person을 복사본 persons array에 update 해준다
@@ -52,7 +53,6 @@ class App extends Component {
     };
 
     render() {
-
         let persons = null;
         let btnClass = "";
 
@@ -61,25 +61,30 @@ class App extends Component {
                 <div>
                     {this.state.persons.map((person, index) => {
                         return (
-                            <Person
-                                click={() => this.deletePersonHandler(index)}
-                                name={person.name}
-                                age={person.age}
-                                key={person.id}
-                                changed={event =>
-                                    this.nameChangedHandler(event, person.id)
-                                }
-                            />
+                            <ErrorBoundary key={person.id}>
+                                <Person
+                                    click={() =>
+                                        this.deletePersonHandler(index)
+                                    }
+                                    name={person.name}
+                                    age={person.age}
+                                    changed={event =>
+                                        this.nameChangedHandler(
+                                            event,
+                                            person.id
+                                        )
+                                    }
+                                />
+                            </ErrorBoundary>
                         );
                     })}
                 </div>
             );
 
-            btnClass = styles.Red
+            btnClass = styles.Red;
         }
 
         const classes = [];
-
 
         if (this.state.persons.length <= 2) {
             classes.push(styles.red);
@@ -90,15 +95,18 @@ class App extends Component {
         }
 
         return (
-                <div className={styles.App}>
-                    <p className={classes.join(" ")}>
-                        I change my class depending on persons array length!
-                    </p>
-                    <button onClick={this.togglePersonsHandler} className={btnClass}>
-                        Toggle Namecard
-                    </button>
-                    {persons}
-                </div>
+            <div className={styles.App}>
+                <p className={classes.join(" ")}>
+                    I change my class depending on persons array length!
+                </p>
+                <button
+                    onClick={this.togglePersonsHandler}
+                    className={btnClass}
+                >
+                    Toggle Namecard
+                </button>
+                {persons}
+            </div>
         );
     }
 }
