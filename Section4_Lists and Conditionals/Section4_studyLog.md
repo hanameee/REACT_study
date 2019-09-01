@@ -206,7 +206,7 @@ const person = (props) => {
 }
 ```
 
-Person component의 첫번째 <p> 가 클릭되었을 때 props.click이 실행돼는데, 난 이때 deletePersonHandler 라는 메소드를 실행시킬거임!
+Person component의 첫번째 <p> 가 클릭되었을 때 props.click이 실행되는데, 난 이때 deletePersonHandler 라는 메소드를 실행시킬거임!
 
 새롭게 메소드를 만들어주고 아래 App.js에서 persons state를 mapping 할 때 return 하는 JSX 파일에 click props를 만들어 deletePersonHandler의 참조값을 할당해준다.
 

@@ -436,8 +436,6 @@ nest 된 애들도 그냥 styles.Red 로 가져다 쓸 수 있다는 점!
 
 
 
-
-
 ### 72)
 
 `Person.module.css`
@@ -468,4 +466,3 @@ return (
 ```
 
 딱 내가 원하는 component에만 unique 하게 classname을 쓸 수 있다는 점 :)
-
