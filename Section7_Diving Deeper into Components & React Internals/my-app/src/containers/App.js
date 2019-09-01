@@ -1,7 +1,8 @@
 import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
-import styles from "./App.module.css";
-import Person from "../components/Persons/Person/Person";
+import "./App.css";
+import Persons from "../components/Persons/Persons";
+import Cockpit from "../components/Cockpit/Cockpit";
 
 // classed based component
 class App extends Component {
@@ -48,50 +49,24 @@ class App extends Component {
 
     render() {
         let persons = null;
-        let btnClass = "";
 
         if (this.state.showPersons) {
             persons = (
-                <div>
-                    {this.state.persons.map((person, index) => {
-                        return (
-                            <Person
-                                click={() => this.deletePersonHandler(index)}
-                                name={person.name}
-                                age={person.age}
-                                changed={event =>
-                                    this.nameChangedHandler(event, person.id)
-                                }
-                            />
-                        );
-                    })}
-                </div>
+                <Persons
+                    persons = {this.state.persons}
+                    clicked = {this.deletePersonHandler}
+                    changed = {this.nameChangedHandler}
+                />
             );
-
-            btnClass = styles.Red;
-        }
-
-        const classes = [];
-
-        if (this.state.persons.length <= 2) {
-            classes.push(styles.red);
-        }
-
-        if (this.state.persons.length <= 1) {
-            classes.push(styles.bold);
         }
 
         return (
-            <div className={styles.App}>
-                <p className={classes.join(" ")}>
-                    I change my class depending on persons array length!
-                </p>
-                <button
-                    onClick={this.togglePersonsHandler}
-                    className={btnClass}
-                >
-                    Toggle Namecard
-                </button>
+            <div className = "App">
+                <Cockpit
+                    persons = {this.state.persons}
+                    showPersons = {this.state.showPersons}
+                    clicked = {this.togglePersonsHandler}
+                />
                 {persons}
             </div>
         );
