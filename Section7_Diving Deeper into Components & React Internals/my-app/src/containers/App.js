@@ -1,6 +1,6 @@
 import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
-import "./App.css";
+import styles from "./App.module.css";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
 
@@ -61,7 +61,7 @@ class App extends Component {
         }
 
         return (
-            <div className = "App">
+            <div className = {styles.App}>
                 <Cockpit
                     persons = {this.state.persons}
                     showPersons = {this.state.showPersons}
