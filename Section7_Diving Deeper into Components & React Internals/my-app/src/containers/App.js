@@ -1,12 +1,10 @@
 import React, { Component } from "react"; //왜 component는 괄호 안에?
 // import React, { useState } from "react"; // useState react Hook 사용하려구! (위에거 주석처리)
 import styles from "./App.module.css";
-import Person from "./Person/Person";
-import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
+import Person from "../components/Persons/Person/Person";
 
-// 원래 예제에서 사용했던 classed based component
+// classed based component
 class App extends Component {
-    //state는 reserved word 임
     state = {
         persons: [
             { id: "001", name: "Max", age: 28 },
@@ -25,7 +23,6 @@ class App extends Component {
     nameChangedHandler = (event, id) => {
         const personIndex = this.state.persons.findIndex(p => {
             return p.id === id;
-            // return p.userId === id;
         });
 
         const person = {
@@ -33,9 +30,6 @@ class App extends Component {
             //spread operator을 사용해서 항상 복사본으로, Immutable 하게.
             ...this.state.persons[personIndex]
         };
-
-        //alternative approach - depreciated
-        // const person = Object.assign({}, this.state.persons[personIndex]);
 
         person.name = event.target.value;
 
@@ -61,21 +55,14 @@ class App extends Component {
                 <div>
                     {this.state.persons.map((person, index) => {
                         return (
-                            <ErrorBoundary key={person.id}>
-                                <Person
-                                    click={() =>
-                                        this.deletePersonHandler(index)
-                                    }
-                                    name={person.name}
-                                    age={person.age}
-                                    changed={event =>
-                                        this.nameChangedHandler(
-                                            event,
-                                            person.id
-                                        )
-                                    }
-                                />
-                            </ErrorBoundary>
+                            <Person
+                                click={() => this.deletePersonHandler(index)}
+                                name={person.name}
+                                age={person.age}
+                                changed={event =>
+                                    this.nameChangedHandler(event, person.id)
+                                }
+                            />
                         );
                     })}
                 </div>
@@ -110,12 +97,5 @@ class App extends Component {
         );
     }
 }
-
-// 영상에서 예제로 연습한 것. 위의 JSX가 사실은 밑에 return 되는 js 형태로 컴파일된다는것을 명심! (html처럼 보여도 html이 아니다)
-// class App extends Component {
-//   render() { ///위에서는 render이 없는데...!
-//     return React.createElement('div', {className : 'App'}, React.createElement('h1', null, 'Does this work now?'))
-//   }
-// }
 
 export default App;
