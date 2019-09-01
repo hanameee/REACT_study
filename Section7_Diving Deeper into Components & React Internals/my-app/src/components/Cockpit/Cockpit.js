@@ -18,6 +18,7 @@ const cockpit = (props) => {
     }
     return (
         <div className = {styles.Cockpit}>
+            <h1>{props.title}</h1>
             <p className={classes.join(" ")}>
                 I change my class depending on persons array length!
             </p>
