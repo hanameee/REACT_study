@@ -6,6 +6,11 @@ import Cockpit from "../components/Cockpit/Cockpit";
 
 // classed based component
 class App extends Component {
+    constructor(props){
+        super(props);
+        console.log("[App.js] constructor");
+        //원래 여기서 this.state 를 선언하는 건데, 밑의 최신 문법이 super이나 this.state 설정을 이걸 우리 대신 해주는 것!
+    }
     state = {
         persons: [
             { id: "001", name: "Max", age: 28 },
@@ -14,6 +19,15 @@ class App extends Component {
         ],
         showPersons: false
     };
+
+    static getDerivedStateFromProps(props,state){
+        console.log("[App.js] getDerivedStateFromProps" , props);
+        return state;
+    }
+
+    componentDidMount() {
+        console.log("[App.js] componentDidMount");
+    }
 
     deletePersonHandler = personIndex => {
         const persons = [...this.state.persons];
@@ -48,6 +62,7 @@ class App extends Component {
     };
 
     render() {
+        console.log("[App.js] render");
         let persons = null;
 
         if (this.state.showPersons) {

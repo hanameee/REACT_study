@@ -6,6 +6,7 @@ import styles from "./Person.module.css";
 //props는 제한되지 않은 숫자의 arguments 를 받을 수 있다.
 
 const person = props => {
+    console.log("[Person.js]] rendering");
     return (
         <div className = {styles.Person}>
             <p onClick={props.click}>
