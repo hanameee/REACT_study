@@ -6,7 +6,7 @@ import Cockpit from "../components/Cockpit/Cockpit";
 
 // classed based component
 class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         console.log("[App.js] constructor");
         //원래 여기서 this.state 를 선언하는 건데, 밑의 최신 문법이 super이나 this.state 설정을 이걸 우리 대신 해주는 것!
@@ -17,11 +17,12 @@ class App extends Component {
             { id: "002", name: "Hannah", age: 25 },
             { id: "003", name: "Jeongho", age: 26 }
         ],
-        showPersons: false
+        showPersons: false,
+        showCockpit: true
     };
 
-    static getDerivedStateFromProps(props,state){
-        console.log("[App.js] getDerivedStateFromProps" , props);
+    static getDerivedStateFromProps(props, state) {
+        console.log("[App.js] getDerivedStateFromProps", props);
         return state;
     }
 
@@ -77,21 +78,30 @@ class App extends Component {
         if (this.state.showPersons) {
             persons = (
                 <Persons
-                    persons = {this.state.persons}
-                    clicked = {this.deletePersonHandler}
-                    changed = {this.nameChangedHandler}
+                    persons={this.state.persons}
+                    clicked={this.deletePersonHandler}
+                    changed={this.nameChangedHandler}
                 />
             );
         }
 
         return (
-            <div className = {styles.App}>
-                <Cockpit
-                    title = {this.props.appTitle}
-                    persons = {this.state.persons}
-                    showPersons = {this.state.showPersons}
-                    clicked = {this.togglePersonsHandler}
-                />
+            <div className={styles.App}>
+                <button
+                    onClick={() => {
+                        this.setState({ showCockpit: false });
+                    }}
+                >
+                    Remove Cockpit
+                </button>
+                {this.state.showCockpit ? (
+                    <Cockpit
+                        title={this.props.appTitle}
+                        persons={this.state.persons}
+                        showPersons={this.state.showPersons}
+                        clicked={this.togglePersonsHandler}
+                    />
+                ) : null}
                 {persons}
             </div>
         );
