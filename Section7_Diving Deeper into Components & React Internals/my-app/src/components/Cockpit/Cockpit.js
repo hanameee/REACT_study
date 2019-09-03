@@ -4,11 +4,14 @@ import styles from "./Cockpit.module.css"
 const Cockpit = (props) => {
     useEffect(() => {
         console.log("[Cockpit.js] useEffect");
-        const timer = setTimeout(()=> {
+        // const timer = setTimeout(()=> {
+        //     alert("Saved data to cloud");
+        // },1000);
+        setTimeout(()=> {
             alert("Saved data to cloud");
         },1000);
         return() => {
-            clearTimeout(timer);
+            // clearTimeout(timer);
             console.log("[Cockpit.js] clean up work in useEffect");
         }
     }, [] );
@@ -22,7 +25,7 @@ const Cockpit = (props) => {
 
     const classes = [];
     let btnClass = "";
-``
+
     if (props.showPersons) {
         btnClass = styles.Red;
     }
