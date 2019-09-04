@@ -126,7 +126,74 @@ export default aux;
 
 해주면 되지롱
 
+아래가 기존에 `<div className = {styles.Person}>` 이라는 wrapping div 가 있었을 때
+
+![image-20190904215254895](/Users/hanameee/Library/Application Support/typora-user-images/image-20190904215254895.png)
+
+아래 hoc를 써서 Aux로 wrapping 했을 때
+
+![image-20190904215237632](/Users/hanameee/Library/Application Support/typora-user-images/image-20190904215237632.png)
+
 
 
 #### +) 왜 adjacent, top-level JSX elements를 리턴하는게 불가능한가?
+
+JSX 코드를 javascript 로 translate 해보면 명확해진다.
+
+아래와 같은 JSX 코드가 있다고 가정해보자.
+
+```jsx
+import React from 'react';
+const heading = props => (
+     <h1>{props.title}</h1>
+     <h2>{props.subtitle}</h2>
+);
+export default heading;
+```
+
+React는 우리를 위해 대신 위의 JSX 코드를 아래와 같은 javascript 코드로 변환해준다.
+
+```javascript
+import React from 'react';
+const heading = props => React.createElement('h1', {},
+props.title) React.createElement('h2', {}, props.subtitle);
+export default heading;
+```
+
+`React.createElement( )` 태그가 2번 나오고 있지! 이건 유효하지 않은 자바스크립트 문법이다.
+2개의 expression을 return하고 있기 때문이다.
+
+가능한 방법은
+
+- 1. array of React.createElement() calls 를 리턴하거나
+
+     ```javascript
+     import React from 'react';
+     const heading = props => [
+          React.createElement('h1', {key: 'i1'}, props.title),
+          React.createElement('h2', {key: 'i2'}, props.subtitle)
+     ];
+     export default heading;
+     // 아까 첫 방식대로 array of keyed JSX elements를 리턴하면 이렇게 translate 된다.
+     ```
+
+     
+- 2. 여러 React.createElement() call 을 wrap 하는 한개의 React.createElement() call을 리턴하는 방법이 있다.
+
+     ```javascript
+     import React from 'react';
+     import Aux from '../hoc/Aux';
+     const heading = props => React.createElement(
+          Aux,
+          {},
+          React.createElement('h1', {key: 'i1'}, props.title),
+          React.createElement('h2', {key: 'i2'}, props.subtitle)
+     );
+     export default heading;
+     //아까 두번째 방식대로 aux로 wrap하면 이렇게 translate 된다.
+     ```
+
+     
+
+### 102)
 
