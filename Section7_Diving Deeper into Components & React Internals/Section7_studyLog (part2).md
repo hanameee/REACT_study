@@ -177,7 +177,6 @@ export default heading;
      // 아까 첫 방식대로 array of keyed JSX elements를 리턴하면 이렇게 translate 된다.
      ```
 
-     
 - 2. 여러 React.createElement() call 을 wrap 하는 한개의 React.createElement() call을 리턴하는 방법이 있다.
 
      ```javascript
@@ -312,3 +311,46 @@ behind the scenes logic (some Javascript code that handles errors or sends analy
 - HTML code
 - extra JS logic 등등...
 
+
+
+### 105) Passing props through hoc
+
+`App.js` 에서 App component에 withClass hoc를 적용한 것처럼 `Person.js` 에도 적용해보자!
+
+![image-20190904235041986](/Users/hanameee/Library/Application Support/typora-user-images/image-20190904235041986.png)
+
+적용해보면, className styles는 잘 먹혔는데 data가 다 날라간 것을 볼 수 있다.
+
+우리가 `Person.js` 파일에서 아래와 같이 withClass 를 사용하는데
+`export default withClass(Person,styles.Person);`
+
+여기 Person이 WrapperComponent를 담당한다. 그런데 이 WrapperComponent에 어떤 props도 전달되고 있지 않아서 data가 보여지고 있지 않은 것!
+
+withClass 함수가 return 하는 functional component는 props를 파라미터로 받고, 이 props는 Person을 import 해서 person component에 props를 전달한 그 props와 동일하다 (우리 예제에서는 `Persons.js`) 
+
+`Persons.js`
+
+```jsx
+<Person
+    click={() => this.props.clicked(index)}
+    name={person.name}
+    age={person.age}
+    changed={event => this.props.changed(event, person.id)}
+    key={person.id}
+/>
+```
+
+위에서 전달된 저 props들이 다 아래 withClass의 props에 key-value 형태로 전달되는 것!
+
+```javascript
+const withClass = (WrapperComponent,className) => {
+    return props => (
+        <div className = {className}>
+      			//<WrapperComponent props={props}> 이케 하면 안됨 주의주의~
+            <WrapperComponent {...props}/>
+        </div>
+    )
+}
+```
+
+위처럼 spread operator을 사용해서 props를 전달해주면 정상적으로 data가 넘어가는 것을 볼 수 있다.
