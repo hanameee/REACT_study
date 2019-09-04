@@ -197,3 +197,27 @@ export default heading;
 
 ### 102)
 
+real DOM에 extra DOM(html) element가 rendered 되지 않으면서 adjacent elements를 사용하고 싶으면 Aux를 사용한다.
+
+앞서 props.children을 사용해 직접 만든 Aux component를 사용해도 되지만, React 16.2 버전부턴  자체 built in 된 component를 제공한다.
+
+`React.Fragment` 임!
+
+```javascript
+<React.Fragment>
+  ...
+</React.Fragment>
+```
+
+이렇게 사용해도 되고,
+
+```javascript
+import React, { Fragment } from "react";
+//이렇게 Fragment를 import 한 뒤
+<Fragment>
+  ...
+</Fragment>
+//이렇게 . 없이 사용해도 된다
+```
+
+Fragment는 기능적으로 Aux와 완전히 동일하게 작동한다.
