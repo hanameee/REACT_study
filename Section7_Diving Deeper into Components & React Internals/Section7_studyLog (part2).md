@@ -354,3 +354,65 @@ const withClass = (WrapperComponent,className) => {
 ```
 
 위처럼 spread operator을 사용해서 props를 전달해주면 정상적으로 data가 넘어가는 것을 볼 수 있다.
+
+
+
+### 106) Setting state correctly (in class based component)
+
+우리는 `App.js` 에서 state를 관리하고, setState를 통해 state를 manage 했었다.
+예제에서는 바르게 setState를 사용했지만, invalid 하게 사용하는 경우도 있다! 예시로 알아보자.
+
+`nameChangedHandler` 이 called 될때마다 그 갯수를 tracking 하고 싶다고 가정해보자. 이 경우, 우리는 직전의 state ( = previous old state) 를 받아 거기에 +1을 해가면 되겠지! (increment) 
+
+아래처럼 작성하면 될 것 같다.
+
+```javascript
+state = {
+    persons: [
+        { id: "001", name: "Max", age: 28 },
+        { id: "002", name: "Hannah", age: 25 },
+        { id: "003", name: "Jeongho", age: 26 }
+    ],
+    showPersons: false,
+    showCockpit: true,
+  	//changeCounter을 추가해준다 (초기값 0)
+    changeCounter : 0
+};
+
+...
+nameChangedHandler = (event, id) => {
+  	...
+    this.setState({ 
+        persons: persons,
+      	//nameChangedHandler의 setState에 changeCounter을 추가해준다
+        changeCounter: this.state.changeCounter + 1
+    });
+};
+```
+
+실행해보면 잘 되는걸 알 수 있지만, 위와 같이 old state 를 `this.state.changeCounter` 로 정의하는 방식엔 문제가 있다.
+
+그 이유는 **setState가 state의 immediate update를 보장하지 않기 때문**이다.
+
+React는 setState가 실행되면, state update와 re-render cycle을 실행할 resources가 있을 때 진행하라고 schedule 한다. 작고 간단한 app에서는 주로 이 과정이 instant 하게 일어나겠지만 그게  instant update를 guarantee 하는 것은 아니다.
+
+set state 를 동기적으로 호출해도 그 즉시 execute & finish 하는 것이 아니기 때문에  위에서 우리가 old state를 가져오기 위해 사용한 `this.state.changeCounter` 은 우리의 로직에서  depend 하고 있는 latest state (or the previous state)를 보장하지 않는다!
+
+예를 들어 어플의 어딘가에서 거의 동시에 다른 setState를 호출했고 그 setState가 더 먼저 끝났다면? this.state는 older state일 수도 있다. 핵심은 this.state는 우리가 depend하는 직전의  previous state를 보장하지 못한다는 것. 
+
+그렇다면 대안은?
+
+setState는 일반적으로 Javascript object를 받지만, 아래와 같이 function을 받을 수도 있다!
+
+```javascript
+//첫번째 argument는 prevState, 두번째 argument는 props (지금은 사용되지 X)
+this.setState((prevState, props) => {
+    return {
+        persons: persons,
+      	//여기서의 prevState는 직전의 state임을 보장한다
+        changeCounter: prevState.changeCounter + 1
+    };
+});
+```
+
+이거 중요하니까 꼭 기억하자! state updates that depend on the old state 를 할때는 꼭 setState에서 위의 문법을 사용할 것.

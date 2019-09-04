@@ -20,7 +20,8 @@ class App extends Component {
             { id: "003", name: "Jeongho", age: 26 }
         ],
         showPersons: false,
-        showCockpit: true
+        showCockpit: true,
+        changeCounter: 0
     };
 
     static getDerivedStateFromProps(props, state) {
@@ -63,7 +64,12 @@ class App extends Component {
         const persons = [...this.state.persons];
         //변경된 person을 복사본 persons array에 update 해준다
         persons[personIndex] = person;
-        this.setState({ persons: persons });
+        this.setState((prevState, props) => {
+            return {
+                persons: persons,
+                changeCounter: prevState.changeCounter + 1
+            };
+        });
     };
 
     togglePersonsHandler = () => {
