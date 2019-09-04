@@ -195,7 +195,7 @@ export default heading;
 
      
 
-### 102)
+### 102) React.Fragment 사용하기
 
 real DOM에 extra DOM(html) element가 rendered 되지 않으면서 adjacent elements를 사용하고 싶으면 Aux를 사용한다.
 
@@ -221,3 +221,94 @@ import React, { Fragment } from "react";
 ```
 
 Fragment는 기능적으로 Aux와 완전히 동일하게 작동한다.
+
+
+
+### 103) Higher Order Component
+
+HOC = 다른 component들을 wrap 하는 component!
+
+우리는 이전에 className을 assign 하기 위해 wrapper div를 사용했었지. 이런 경우가 custom hoc를 만들기 좋은 경우이다.
+
+`/hoc/WithClass.js` (hoc filename은 With로 시작하는 경우가 많다.)
+
+```javascript
+import React from "react";
+
+const withClass = props => (
+    <div className = {props.classes}>
+        {props.children}
+    </div>
+);
+
+export default withClass;
+```
+
+이 withClass 는 단순히 내 component를 wrap 하는 특정 class를 가진 div를 set up 한다.
+
+이 custom hoc는 App.js 에서 아래와 같이 사용할 수 있다.
+
+```javascript
+return (
+  <WithClass classes = {styles.App}>
+  ...
+	</WithClass>
+)
+```
+
+지금은 기존처럼 `<div className = {styles.App}>` 으로 하나, custom hoc로 하나 별반 차이가 없지만 나중에 HTTP request를 날리는 component 를 wrap 해서 HTTP error을 handling하는 경우에 아주 유용하다!
+
+정리하자면, 다른 components 를 감싸는 HOC는 styling이든, additional HTML 구조든, logic이든을 추가한다는 것!
+
+
+
+### 104) HOC 를 생성하는 다른 방법
+
+앞서 functional component를 만드는 방식으로 hoc를 만들었다면, hoc를 만드는 방식에 하나 더 있다! 일반적인 JS function 으로 만드는 방식!
+
+```javascript
+import React from "react";
+//first argument는 우리의 wrapped component가 될거고 이후 그 component를 JSX에서 reference하게 쓰일 것이기에 반드시 대문자로 입력해야 함
+//second argument는 hoc에서 필요한 것 - 어떤 종류의 hoc를 만드느냐에 따라 달라짐
+const withClass = (WrappedComponent,className) {
+  //여기서 리턴값으로 component function 을!!
+  return props => (
+    <div className = {className}>
+    	//이렇게 쓰일거라서 대문자가 필요하지롱
+    	<WrappedComponent />
+    </div>
+  )
+}
+
+export default withClass;
+```
+
+이걸 어떻게 사용할 것이냐?
+
+`App.js`
+
+```javascript
+import withClass from "../hoc/WithClass";
+//대문자로 할 필요가 없다. regular JS function 이니까
+...
+
+<Aux>
+  ...
+</Aux>
+
+...
+
+export default withClass(App, styles.App);
+//이렇게 App을 첫번째 argument로, className이 될 css module의 styles.App을 두번째 argument로 withClass 함수에게 넘겨주면 됨!
+```
+
+HOC를 만드는 2가지 방법 중 (functional component, regular JS function with 2 argument that returns functional component) 어떤걸 사용할 것이냐? = hoc가 수행하는 기능에 따라 다르다!
+
+behind the scenes logic (some Javascript code that handles errors or sends analytics data  등등) 을 담당하는 hoc의 경우 렌더링되는 JSX에는 크게 관여하지 않고 logic에 관여하므로 후자를 사용하는 것이 조금 더 명확하다.
+
+앞으로 강의에서 다양한 hoc를 활용하게 될텐데, (꼭 직접 만드는게 아니더라도 thrid party 패키지를 이용한) 그때마다 hoc가 component에 smth extra를 추가한다는 것을 기억하자!
+
+- style
+- HTML code
+- extra JS logic 등등...
+

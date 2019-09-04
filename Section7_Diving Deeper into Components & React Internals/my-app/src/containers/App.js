@@ -3,6 +3,8 @@ import React, { Component } from "react"; //왜 component는 괄호 안에?
 import styles from "./App.module.css";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
+import Aux from "../hoc/Aux";
+import withClass from "../hoc/WithClass";
 
 // classed based component
 class App extends Component {
@@ -86,7 +88,25 @@ class App extends Component {
         }
 
         return (
-            <div className={styles.App}>
+            // <div className={styles.App}>
+            //     <button
+            //         onClick={() => {
+            //             this.setState({ showCockpit: false });
+            //         }}
+            //     >
+            //         Remove Cockpit
+            //     </button>
+            //     {this.state.showCockpit ? (
+            //         <Cockpit
+            //             title={this.props.appTitle}
+            //             personsLength={this.state.persons.length}
+            //             showPersons={this.state.showPersons}
+            //             clicked={this.togglePersonsHandler}
+            //         />
+            //     ) : null}
+            //     {persons}
+            // </div>
+            <Aux>
                 <button
                     onClick={() => {
                         this.setState({ showCockpit: false });
@@ -103,9 +123,9 @@ class App extends Component {
                     />
                 ) : null}
                 {persons}
-            </div>
+            </Aux>
         );
     }
 }
 
-export default App;
+export default withClass(App, styles.App);
