@@ -1,31 +1,32 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Person from "./Person/Person";
 
 class Persons extends Component {
-
     // static getDerivedStateFromProps(props,state){
     //     console.log("[Person.js] getDerivedStateFromProps");
     //     return state;
     // }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log("[Persons.js] shouldComponentUpdate");
-        return true;
-        // if(nextProps.persons !== this.props.persons) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (
+    //         nextProps.persons !== this.props.persons ||
+    //         nextProps.changed !== this.props.changed ||
+    //         nextProps.clicked !== this.props.clicked
+    //     ) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
         console.log("[Persons.js] getSnapshotBeforeUpdate");
-        return { message : "snapshot!" };
+        return { message: "snapshot!" };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log("[Persons.js] componentDidUpdate");
-        console.log(snapshot)
+        console.log(snapshot);
     }
 
     componentWillUnmount() {

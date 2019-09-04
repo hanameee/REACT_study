@@ -242,7 +242,7 @@ const App = props => {
 
 `useState`는 항상 2개의 element 를 리턴한다. 이전 class based에서 this.state가 하던 역할을 이젠 personsState가 한다!
 
-`setPersonsstate`는 우리가 new state 를 설정할 수 있도록 한다
+`setPersonsState`는 우리가 new state 를 설정할 수 있도록 한다
 
 
 
