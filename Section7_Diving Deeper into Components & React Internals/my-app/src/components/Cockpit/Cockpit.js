@@ -1,17 +1,13 @@
-import React, { useEffect }from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Cockpit.module.css"
 
 const Cockpit = (props) => {
+
+    const toggleBtnRef = useRef();
     useEffect(() => {
         console.log("[Cockpit.js] useEffect");
-        // const timer = setTimeout(()=> {
-        //     alert("Saved data to cloud");
-        // },1000);
-        setTimeout(()=> {
-            alert("Saved data to cloud");
-        },1000);
+        toggleBtnRef.current.click();
         return() => {
-            // clearTimeout(timer);
             console.log("[Cockpit.js] clean up work in useEffect");
         }
     }, [] );
@@ -24,6 +20,7 @@ const Cockpit = (props) => {
     },);
 
     const classes = [];
+
     let btnClass = "";
 
     if (props.showPersons) {
@@ -37,13 +34,14 @@ const Cockpit = (props) => {
     if (props.personsLength <= 1) {
         classes.push(styles.bold);
     }
+
     return (
         <div className = {styles.Cockpit}>
             <h1>{props.title}</h1>
             <p className={classes.join(" ")}>
                 I change my class depending on persons array length!
             </p>
-            <button onClick={props.clicked} className={btnClass}>
+            <button ref={toggleBtnRef} onClick={props.clicked} className={btnClass}>
                 Toggle Namecard
             </button>
         </div>
