@@ -416,3 +416,43 @@ this.setState((prevState, props) => {
 ```
 
 이거 중요하니까 꼭 기억하자! state updates that depend on the old state 를 할때는 꼭 setState에서 위의 문법을 사용할 것.
+
+
+
+### 107) Using PropTypes
+
+state를 바르게 쓰는 법을 배웠으니 이제 props를 바르게 쓰는 법을 공부해보자
+
+`Person.js` 에서 우리는 Person 컴포넌트에서 아래와 같은 props를 받는다.
+
+```javascript
+<Fragment>
+    <p onClick={this.props.click}>
+        I'm {this.props.name} and I am {this.props.age} years old!
+    </p>
+    <p>{this.props.children}</p>
+    <input
+        type="text"
+        onChange={this.props.changed}
+        value={this.props.name}
+    />
+    {/* <input type="text" onChange={props.changed}/> */}
+</Fragment>
+```
+
+Name, age, changed, click 등의 prop을 받고 있는 것을 볼 수 있다.
+
+지금은 내가 만든 프로젝트라 어떤 컴포넌트가 어떤 prop을 쓰는지 다 알고 있지만, 여럿이서 프로젝트를 진행하거나, 타인이 만든 라이브러리를 쓸 때는 그렇지 않을 수도 있다!
+
+만약 age prop으로 계산을 해야 하는데 실수로 age prop에 string을 넘긴다면? (틀린 type) 받지 않는 prop인 hobby를 넘긴다면? (없는 prop)
+
+-  어떤 컴포넌트가 어떤 props를 사용하는지 알려줄 수 있다면
+- incorrect props를 pass했을때 error나 warning을 throw할 수 있다면
+
+훨씬 좋을 것!
+
+
+
+`prop-types` 라는 외부 package를 통해 할 수 있다. React team이 제공하는 추가 설치 패키지임!
+
+`npm install --save prop-types`
