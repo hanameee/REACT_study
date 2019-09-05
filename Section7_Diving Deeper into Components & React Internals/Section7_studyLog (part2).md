@@ -419,7 +419,7 @@ this.setState((prevState, props) => {
 
 
 
-### 107) Using PropTypes
+### 107)  
 
 state를 바르게 쓰는 법을 배웠으니 이제 props를 바르게 쓰는 법을 공부해보자
 
@@ -453,6 +453,60 @@ Name, age, changed, click 등의 prop을 받고 있는 것을 볼 수 있다.
 
 
 
-`prop-types` 라는 외부 package를 통해 할 수 있다. React team이 제공하는 추가 설치 패키지임!
+`prop-types` 라는 외부 package를 통해 할 수 있다. React team이 제공하는 추가 설치 패키지. 
 
-`npm install --save prop-types`
+1. 설치 `npm install --save prop-types`
+
+2. import 해오기
+
+   ```javascript
+   // 대문자 권장
+   import PropTypes from "prop-types"
+   ```
+
+3. component 선언문 이후에 사용하기 (functional & class based 다 된다)
+
+   ```javascript
+   class Person extends Component {
+       render() {
+           console.log("[Person.js]] rendering");
+           return (
+               <Fragment>
+                   <p onClick={this.props.click}>
+                       I'm {this.props.name} and I am {this.props.age} years old!
+                   </p>
+                   <p>{this.props.children}</p>
+                   <input
+                       type="text"
+                       onChange={this.props.changed}
+                       value={this.props.name}
+                   />
+                   {/* <input type="text" onChange={props.changed}/> */}
+               </Fragment>
+           );
+       }
+   }
+   //위처럼 class definition 후, 혹은 function setup 뒤 변수에 할당한 후, component에 접근 할 수 있지!
+   
+   //이 propTypes는 반드시 소문자 p로 시작되어야 함 (special property = it will be a JS object from now on. React는 development mode에서 내가 incorrect props를 넘기면 warning을 줄 것임)
+   Person.propTypes = {
+       click : PropTypes.func,
+       name : PropTypes.string,
+       age : PropTypes.number,
+     	changed : PropTypes.func 
+   }
+   //위처럼 key-value pair로 [prop name - PropTypes.자료형] 을 정의
+   ```
+
+이렇게 proptype을 정해주고 난 후 `App.js` 에서 age prop을 string으로 변경해보면 아래와 같은 에러가 뜬다.
+
+![image-20190905232036726](/Users/hanameee/Library/Application Support/typora-user-images/image-20190905232036726.png)
+
+협업할 때 development mode에서 잘못된 proptype을 잡아낼 수 있으니까 유용하다.
+
+모든 component에 적용해야 하는 것은 아니지만
+
+- 중요한 component나 다른 개발자들과 함께 사용할 component library를 만들 때
+- which props your components take & which type of data goes into which prop 이 명확하지 않을 때
+
+이럴때는 곡 prop type을 사용하는게 좋다!

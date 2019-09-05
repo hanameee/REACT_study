@@ -8,18 +8,17 @@ import withClass from "../../../hoc/WithClass";
 //props는 제한되지 않은 숫자의 arguments 를 받을 수 있다.
 
 class Person extends Component {
+    constructor(props) {
+        super(props);
+        this.inputElement = React.createRef();
+    }
+
+    componentDidMount() {
+        this.inputElement.current.focus();
+    }
+
     render() {
         console.log("[Person.js]] rendering");
-        // return (
-        //     <div className = {styles.Person}>
-        //         <p onClick={this.props.click}>
-        //             I'm {this.props.name} and I am {this.props.age} years old!
-        //         </p>
-        //         <p>{this.props.children}</p>
-        //         <input type="text" onChange={this.props.changed} value={this.props.name} />
-        //         {/* <input type="text" onChange={props.changed}/> */}
-        //     </div>
-        // );
         return (
             <Fragment>
                 <p onClick={this.props.click}>
@@ -27,6 +26,8 @@ class Person extends Component {
                 </p>
                 <p>{this.props.children}</p>
                 <input
+                    // ref={(inputEl)=>{this.inputElement = inputEl}}
+                    ref={this.inputElement}
                     type="text"
                     onChange={this.props.changed}
                     value={this.props.name}
