@@ -361,3 +361,72 @@ import AuthContext from "../../context/auth-context";
 ```
 
 여기서도 마찬가지로 `context.login` 으로  context value를 가져다가  사용할 수 있다.
+
+
+
+### 113) Using contextType & useContext()
+
+class based component랑 functional components 에서 context API를 조금 더 고급지게 쓰는 방법이 있다.
+
+#### 1. in Class based component
+
+React 16.6 version 부터 static 변수 contextType을 지원한다. 이걸 이용하면 기존에 render() 내에서 `<AuthContext.Consumer>` 로 감싸서 내부에서 익명함수를 리턴해서 사용할 수 있던 context value를 아무곳에서나 사용할 수 있다. `componentDidMount` 같은 lifecycle hooks 내에서도!
+
+```jsx
+import AuthContext from "../../../context/auth-context";
+...
+// 반드시 static, 철자 지켜서 가져와야 한다
+static contextType = AuthContext;
+    componentDidMount() {
+        this.inputElement.current.focus();
+      	// this.context를 사용해 어디에서나 context value에 access 할 수 있다
+      	console.log(this.context.authenticated);
+    }
+
+    render() {
+      	...
+        return (
+            <Fragment>
+                {this.context.authenticated ? <p>Authenticated!</p> : <p>You need to login</p>}
+          ...
+            </Fragment>
+        );
+    }
+```
+
+`contextType` 문법을 사용하는 것이 더 쉽고, 짧고, 또 기존에는 access를 가질 수 없던 곳들도 context에 접근할 수 있으므로 이 방법을 더 권장한다!
+
+####2. in Functional component
+
+React는 Functional component를 위해선 `useContext` hook을 제공한다! 
+
+```javascript
+import React, { useEffect, useRef, useContext } from "react";
+...
+const Cockpit = (props) => {
+  ...
+  // 아무 변수명으로 써도 무방
+  const authContext = useContext(AuthContext);
+  // 이제 function body 어느 곳에서나 사용할 수 있다.
+  console.log(authContext.authenticated);
+}
+
+...
+return (
+  // authContext.login 만으로 간단하게 접근 가능!
+  <button onClick={authContext.login}>Log in</button>
+)
+```
+
+
+
+정리하자면, functional component 에서는 `useContext()` hook 을, class based component에서는 `contextType` 을 이용해서 보다 더 편리하게 context를 사용할 수 있다.
+
+context API는 components 간에 props 를 줄줄이 거치지 않고도 data를 manage 할 수 있도록 도와준다. 나중에 Redux 랑도 연결될 것이고, 중요한 부분이니 꼭 기억해둘것!
+
+
+
+### 114) Wrap Up
+
+이 module (Section7) 은 나중에 API reference 처럼 찾아볼 것.
+다양한 것들에 대한 broad overview를 제공했던 모듈이기에!
