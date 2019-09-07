@@ -185,3 +185,95 @@ useEffect(() => {
 
 
 
+### 111) Prop Chain 문제 이해하기
+
+만약 우리가 각 Person의 authentication status를 `Cockpit` 에서 관리하고, authenticated 되었는지 아닌지를 각 Person에서 나타내고 싶다고 생각해보자.
+
+그렇다면 지금 상태에서는
+
+1. Cockpit.js 에서 Log in 버튼을 만들고, 그 버튼의 onclick 으로 props.login 을 준다.
+
+```javascript
+<button onClick = {props.login}>Log in</button>
+```
+
+2. Cockpit component를 사용하는 App.js에서 login prop을 pass 해준다
+
+```jsx
+class App extends Component {
+  ...
+    state = {
+      ...
+    	// state에 authenticated 추가
+      authenticated: false
+    }
+
+loginHandler = () {
+  // loginHandler이 실행되면 setstate에서 authenticated를 true로!
+  this.setState({authenticated: true})
+}
+render() {
+  ...
+  <Cockpit
+    // pass down login prop
+    login={this.loginHandler}
+  />  
+}
+```
+
+이렇게 authenticated 된 정보를 person component에서 사용하고 싶은데, `app.js` 파일에서는 persons component 에 대해서만 접근이 가능하지!
+
+따라서 이 정보를 person 에서 쓰려면 다음과 같이 App > Persons > Person 으로 전달해줘야한다.
+
+`App.js`
+
+```javascript
+render() {
+  ...
+  if (this.state.showPersons) {
+    persons = (
+      <Persons
+        ...
+        // App.js 에서 Persons로 authenticated state를 전달해준다
+        isAuthenticated = {this.state.authenticated}
+      />
+    );
+  }
+}
+```
+
+`Persons.js`
+
+```javascript
+render() {
+  return this.props.persons.map((person, index) => {
+    return (
+      <Person
+      ...
+      // App.js 에서 넘겨준 isAuthenticated를 Person으로 전달해준다
+      isAuth={this.props.isAuthenticated}
+      />
+  );
+});
+}
+```
+
+`Person.js`
+
+```javascript
+render() {
+  return (
+    <Fragment>
+    	// Persons.js 에서 넘겨받은 isAuth를 드디어 Person 에서 사용할 수 있다.
+    	{this.props.isAuth ? <p>Authenticated!</p> : <p>Please log in</p>
+      ...}
+    </Fragment>
+);
+}
+```
+
+그런데 이건 별로 바람직한 방법이 아님. props를 전달하기 위해 multiple levels를 거치고 있고, Persons는 authentication 에 아무 관심도 없고 그저 App > Person으로 가기 위한 중간단계일 뿐! = extra redundancy & reusability 하락
+
+이런 Prop chain 문제를 해결하기 위해 React 가 제공하는게 바로 **Context** 임.
+
+특정 data나 state를 component A에서 component D로 보내기 위해 별로 상관도 없는 B,C를 일일히 거치는게 아니라 바로 A>D로 갈 수 있도록 하는것!
