@@ -249,7 +249,7 @@ render() {
   return this.props.persons.map((person, index) => {
     return (
       <Person
-      ...
+      ...s
       // App.js 에서 넘겨준 isAuthenticated를 Person으로 전달해준다
       isAuth={this.props.isAuthenticated}
       />
@@ -277,3 +277,87 @@ render() {
 이런 Prop chain 문제를 해결하기 위해 React 가 제공하는게 바로 **Context** 임.
 
 특정 data나 state를 component A에서 component D로 보내기 위해 별로 상관도 없는 B,C를 일일히 거치는게 아니라 바로 A>D로 갈 수 있도록 하는것!
+
+
+
+### 112) Using the Context API
+
+`/context/auth-context.js` 에 context object를 생성해보자.
+
+```javascript
+import React from "react";
+
+const authContext = React.createContext({
+  	// 이렇게 내가 context에서 접근하고 싶은 값들을 몽땅 첫 default value로 주는 이유는 mandatory이기 때문이 아니라, 단지 IDE 자동완성을 위한 것. 뒤에서 어차피 다시 value를 dynamic하게 줄 것이기 때문에 ~_~
+    authenticated : false,
+    login : () => {}
+});
+
+export default authContext;
+```
+
+context = value that can be passed btw React components without using props 
+
+`React.createContext` 내에 초기값을 줘서 context를 만들 수 있다. context는 결국에 우리가 available 한 scope를 정할 수 있는 (globally or whatever) JS object이기 때문.
+
+createContext의 value로는 (=context value) 객체 말고도 배열이나 string, number 등을 줄 수 있다. 
+
+`app.js`
+
+```javascript
+import AuthContext from "../context/auth-context";
+// 이렇게 import 해와서 custom component 처럼 사용할 수 있다.
+```
+
+Context component는 해당 context value 값에 접근해야 하는 모든 app의 부분들을 wrap 해야함.
+우리의 경우 App.js 에서는 Cockpit과 **Persons에서** authentication info가 필요하기에 return의 cockpit 부분을 감싸준다. (조심! Persons에서 안감쌌다가 person에서 적용 안되가지고 삽질함)
+
+```jsx
+<AuthContext.Provider value = {
+  {
+    // 아까  auth-context.js에서 default로 설정한 초기값들한테 Dynamic value를 준다
+  	authenticated: this.state.isAuthenticated,
+  	login: this.loginHandler
+  }
+ }>
+  {this.state.showCockpit ? (
+   <Cockpit
+     title={this.props.appTitle}
+     personsLength={this.state.persons.length}
+     showPersons={this.state.showPersons}
+     clicked={this.togglePersonsHandler}
+     login={this.loginHandler}
+   />
+  ) : null}
+  {persons}
+</AuthContext.Provider>
+```
+
+JS는 context value의 object값이 변경 되었다고 해서 re-rendering을 진행하지 않는다. 따라서   authentication status는 여전히 component의 state에서 관리해야 한다. 다만 이 state를 (`this.state.isAuthenticated`) AuthContext.Provider 의 value prop에 저장함으로써 state가 update 되면 자동으로  re-rendering이 되도록!
+
+
+
+`Person.js`
+
+```jsx
+// return하는 JSX 코드 중 context를 사용해야 하는 부분을 AuthContext.consumer로 감싸고, context를 인자로 받아 우리가 원하는 JSX를 리턴하는 익명함수를 childeren으로 넣어준다.
+<AuthContext.Consumer>
+  {(context) => context.authenticated ? <p>is Authenticated!</p> : <p>need to log in!</p> }
+</AuthContext.Consumer>
+```
+
+AuthContex.Consumer은 감싸고 있는 children으로 JSX 코드를 받는게 아니라 **context를 argument로 받아 JSX코드를 리턴하는 function**을 받는다. 이렇게 함으로써 그 어떤 component에서도 해당 context를 consume해서 value값을 사용할 수가 있게 되는것.
+
+그러면 `context.authenticated` 로 app.js에서 AuthContext.Provider에서 prop으로 준 context value 값을 `context.authenticated` 형태로 사용할 수 있게 된다! (props 대신에)
+
+`Cockpit.js`
+
+```jsx
+import AuthContext from "../../context/auth-context";
+...
+<AuthContext.Consumer>
+  {(context) => <button onClick={context.login}>Log in</button>}
+</AuthContext.Consumer>
+```
+
+여기서도 마찬가지로 `context.login` 으로  context value를 가져다가  사용할 수 있다.

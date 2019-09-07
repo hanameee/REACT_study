@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import styles from "./Person.module.css";
+
 import Aux from "../../../hoc/Aux";
+import AuthContext from "../../../context/auth-context";
 import PropTypes from "prop-types"
 import withClass from "../../../hoc/WithClass";
 //우리는 component를 extends 한 class를 만드는게 아니라 그냥 function을 만들거라서 App.js 에서처럼 component를 Import 해올 필요가 없음
@@ -15,13 +17,18 @@ class Person extends Component {
 
     componentDidMount() {
         this.inputElement.current.focus();
+
     }
 
     render() {
         console.log("[Person.js]] rendering");
         return (
             <Fragment>
-                {this.props.isAuth ? <p>is Authenticated!</p> : <p>need to log in!</p>}
+                <AuthContext.Consumer>
+                    {(context) => 
+                        context.authenticated ? <p>Authenticated!</p> : <p>You need to login</p>
+                    }
+                </AuthContext.Consumer>
                 <p onClick={this.props.click}>
                     I'm {this.props.name} and I am {this.props.age} years old!
                 </p>
@@ -33,7 +40,6 @@ class Person extends Component {
                     onChange={this.props.changed}
                     value={this.props.name}
                 />
-                {/* <input type="text" onChange={props.changed}/> */}
             </Fragment>
         );
     }

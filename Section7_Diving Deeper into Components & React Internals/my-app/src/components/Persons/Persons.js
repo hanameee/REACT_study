@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
+import React, { Fragment, PureComponent } from "react";
 import Person from "./Person/Person";
-
+import AuthContext from "../../context/auth-context"
 class Persons extends PureComponent {
     // static getDerivedStateFromProps(props,state){
     //     console.log("[Person.js] getDerivedStateFromProps");
@@ -37,14 +37,16 @@ class Persons extends PureComponent {
         console.log("[Persons.js]] rendering");
         return this.props.persons.map((person, index) => {
             return (
-                <Person
-                    click={() => this.props.clicked(index)}
-                    name={person.name}
-                    age={person.age}
-                    changed={event => this.props.changed(event, person.id)}
-                    key={person.id}
-                    isAuth={this.props.isAuth}
-                />
+                <Fragment>
+                    <Person
+                        click={() => this.props.clicked(index)}
+                        name={person.name}
+                        age={person.age}
+                        changed={event => this.props.changed(event, person.id)}
+                        key={person.id}
+                        isAuth={this.props.isAuth}
+                    />
+                </Fragment>
             );
         });
     }
