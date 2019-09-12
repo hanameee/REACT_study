@@ -150,3 +150,62 @@ export default BurgerBuilder;
 ```
 
 `Layout.module.css` 에서 main element에다가 margin top을 주자!
+
+
+
+### 154. Adding a Dynamic Ingredient Component
+
+`Component/Burger` 폴더를 만들자.
+
+component들이 늘어나면 비단 stateless / stateful 로 폴더를 구분하는 것 외에도, 이렇게 Component 폴더 안에서도 Burger 폴더를 만드는 것처럼 **Feature** area로 나눠서 folder directory를 관리하는게 좋다.
+
+그래야 manageable 하기 때문에 :)
+
+![image-20190913000424317](/Users/hanameee/Library/Application Support/typora-user-images/image-20190913000424317.png)
+
+이렇게 디렉토리를 구성해주고, css는 강의에 있는 코드를 복사!
+
+`BurgerIngredient.js`
+
+
+```javascript
+import React from "react";
+import styles from "./burgerIngredient.module.css";
+const burgerIngredient = (props) => {
+    let ingredient = null;
+  	//switch 문을 통해 특정 경우일 때 ingredient를 정의해준다
+    switch (props.type) {
+        case "bread-bottom":
+            ingredient = <div className={styles.BreadBottom}></div>;
+            break;
+        case "bread-top":
+            ingredient = (
+                <div className={styles.BreadTop}>
+                    <div className={styles.Seeds1}></div>
+                    <div className={styles.Seeds1}></div>
+                </div>
+            );
+            break;
+        case "meat":
+            ingredient = <div className={styles.Meat}></div>;
+            break;
+        case "cheese":
+            ingredient = <div className={styles.Cheese}></div>;
+            break;
+        case "salad":
+            ingredient = <div className={styles.Salad}></div>;
+            break;
+        case "bacon":
+            ingredient = <div className={styles.Bacon}></div>;
+            break;
+        default:
+            ingredient = null;
+    }
+
+    return ingredient;
+};
+
+export default burgerIngredient;
+
+```
+
