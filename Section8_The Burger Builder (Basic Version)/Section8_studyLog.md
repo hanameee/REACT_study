@@ -124,3 +124,29 @@ export default App;
 
 ```
 
+
+
+###153. Burger Builder Container 만들기
+
+Burger과 Build Controls 2개를 가지는 container을 만들어보자.
+: 왜 container 인가? state를 관리할 것이기 때문에!
+
+`containers/BurgerBuilder/BurgerBuilder.js`
+
+```javascript
+import React , { Component, Fragment } from 'react'; 
+class BurgerBuilder extends Component {
+    render() {
+        return(
+            <Fragment>
+                <div>Burger</div>
+                <div>Build Controls</div>
+            </Fragment>
+        );
+    }
+}
+
+export default BurgerBuilder;
+```
+
+`Layout.module.css` 에서 main element에다가 margin top을 주자!
