@@ -209,3 +209,64 @@ export default burgerIngredient;
 
 ```
 
+
+
+### 155. Adding prop type validation
+
+prop-types 패키지를 아래의 명령어로 설치한다.
+
+` yarn install --save prop-types`
+
+강의에서는 prop-type을 쓰기 위해 BurgerIngredient.js 를 functional component > class based component로 바꿨는데 사실 그냥 functional 에서 써도 무방하다고 한다.
+
+```jsx
+// class based니까 component 추가해주기
+import React, { Component } from "react";
+import styles from "./burgerIngredient.module.css";
+import PropTypes from "prop-types"
+
+class BurgerIngredient extends Component {
+    render() {
+        let ingredient = null;
+      	// class based component에서는 props 쓰려면 this.props 사용!
+        switch (this.props.type) {
+            case "bread-bottom":
+                ingredient = <div className={styles.BreadBottom}></div>;
+                break;
+            case "bread-top":
+                ingredient = (
+                    <div className={styles.BreadTop}>
+                        <div className={styles.Seeds1}></div>
+                        <div className={styles.Seeds1}></div>
+                    </div>
+                );
+                break;
+            case "meat":
+                ingredient = <div className={styles.Meat}></div>;
+                break;
+            case "cheese":
+                ingredient = <div className={styles.Cheese}></div>;
+                break;
+            case "salad":
+                ingredient = <div className={styles.Salad}></div>;
+                break;
+            case "bacon":
+                ingredient = <div className={styles.Bacon}></div>;
+                break;
+            default:
+                ingredient = null;
+        }
+    
+        return ingredient;
+    }
+}
+
+// propTypes 추가해주기
+BurgerIngredient.propTypes = {
+    // isRequired condition을 추가해주면 ingredient component에 type passing 없이 사용하려고 하면 error 겟또
+    type : PropTypes.string.isRequired
+};
+
+export default BurgerIngredient;
+```
+
