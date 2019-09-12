@@ -68,4 +68,59 @@ yarn create react-app burger-builder
 
 `create react-app` 을 통해 만들자!
 
-Css module 사용해주고, [google web font](https://fonts.google.com/) import 해오기 (customize )
+Css module 사용해주고, [google web font](https://fonts.google.com/) import 해오기 (customize)
+
+
+
+### 152. Layout Component 만들기
+
+`components` , `containers` 디렉토리 만들기
+
+- Containers : stateful components (state를 사용하는 class based component나 useState를 사용하는 functional component) 가 들어간다
+
+- Components : dumb / presentational components (어떻게 만들어졌건 상관없이 state를 manage 하지 않는 component) 가 들어간다
+
+  
+
+Layout은 state를 manage 하지 않으니, Component에 /Layout/Layout.js 를 만들어준다
+
+`Layout.js`
+
+```javascript
+import React , { Fragment } from "react";
+// 참고로 import {  React , Fragment } from "react"; 이케 하면 에러남 ;_;
+
+const layout = ( props ) => (
+    <Fragment>
+        <div>Toolbar, SideDrawer, Backdrop</div>
+        <main>
+            {props.children}
+        </main>
+    </Fragment>
+)
+
+export default layout;
+```
+
+그리고 `App.js` 에서
+
+```jsx
+import React from 'react';
+import styles from './App.module.css';
+import Layout from './components/Layout/Layout'
+
+function App() {
+  return (
+    <div className = {styles.App}>
+      //props.childeren 으로 이 Layout 태그 안에 있는 놈들을 가져와 렌더링한다
+      <Layout>
+        <p>say ho~~~~~</p>
+      </Layout>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
