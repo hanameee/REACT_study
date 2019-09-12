@@ -1,9 +1,11 @@
 import React from 'react';
-import './App.css';
+import styles from './App.module.css';
 
 function App() {
   return (
-    <div>
+    <div className = {styles.App}>
+      <h1>hello</h1>
+      <p>this is paragraph :)</p>
     </div>
   );
 }

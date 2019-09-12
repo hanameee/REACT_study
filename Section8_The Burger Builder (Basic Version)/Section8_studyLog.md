@@ -68,3 +68,4 @@ yarn create react-app burger-builder
 
 `create react-app` 을 통해 만들자!
 
+Css module 사용해주고, [google web font](https://fonts.google.com/) import 해오기 (customize )
