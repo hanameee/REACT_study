@@ -270,3 +270,33 @@ BurgerIngredient.propTypes = {
 export default BurgerIngredient;
 ```
 
+
+
+### 156.  Starting the Burger Component
+
+Burger component 를 만들어보자!
+
+`Burger.js`
+
+```javascript
+import React from "react";
+import styles from "./Burger.module.css"
+import BurgerIngredient from "./BurgerIngredient/BurgerIngredient"
+
+const burger = ( props ) => {
+    return (
+        <div className = {styles.Burger}>
+            <BurgerIngredient type = "bread-top"/>
+            <BurgerIngredient type = "cheese"/>
+            <BurgerIngredient type = "meat"/>
+            <BurgerIngredient type = "bread-bottom"/>
+
+        </div>
+    )
+}
+
+export default burger;
+```
+
+하지만 지금은 모든 Burger에 대한 것들이 hardcode 되어있는 상태. 동적으로 버거를 바꿀 수 없다!
+다음 강의에서 재료를 state로 관리하고 동적으로 render 하는 법을 배울 것.
