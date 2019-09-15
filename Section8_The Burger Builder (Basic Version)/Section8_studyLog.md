@@ -1,8 +1,8 @@
-##Section8_ A Real App: The Burger Builder (Basic Version)
+## Section8_ A Real App: The Burger Builder (Basic Version)
 
 
 
-###147) Module introduction
+### 147) Module introduction
 
 재료를 추가하고, 버거를 만들고, 구매하는 실제 application을 만들 것임. 배운 이론을 바탕으로 실제 어플을 만들어 볼 것!
 
@@ -622,3 +622,64 @@ removeIngredientHandler = (type) => {
 ![image-20190915234936297](../images/image-20190915234936297.png)
 
 요런 에러가 뜨게 된다.
+
+`Burger.js` 에서 props.ingredients의 value값을 가지고 해당 value의 length 만큼의 array를 만들어 그 길이만큼 JSX를 render하는데, - 길이의 array를 만드려고 하니 error가 뜨는 것.
+
+처음 시작하는 ingredient 의 갯수가 0이하일 때 그냥 return을 하게 해버리면 문제 해결!
+
+```jsx
+removeIngredientHandler = (type) => {
+  const oldCount = this.state.ingredients[type];
+  if(oldCount <= 0) {
+    return;
+  }
+```
+
+
+
+좀 더 업그레이드 하자면, 이럴 경우 아예 less button을 disable 할 수 있다면 좋겠지.
+
+HTML <button> 엔 disable attribute가 있다! 이걸 활용하자 :)
+
+1. BurgerBuilder에서 BuildControls로 disableInfo 객체를 전달해주기
+
+```jsx
+render() {
+  ...
+  // ingredients state를 spread parameter로 복사해와서
+  const disableInfo = {
+    ...this.state.ingredients
+  };
+  // disableInfo의 value값을 true/false로 저장한다 (음수면 true, 양수면 false)
+  for(let key in disableInfo){
+    disableInfo[key]= (disableInfo[key]<=0)
+    //{salad:true, meat:false ...}
+  }
+  
+  ...
+    <BuildControls
+      //이렇게 object를 전달!
+      disabled = {disableInfo}
+```
+
+2. BuildControls에서  BuildControl로 props값 전달해주기
+
+```jsx
+// disabled prop 값을 지금 mapping하고 있는 그 type의 disabled prop으로 할당
+<BuildControl
+  disabled={props.disabled[ctrl]}
+```
+
+3. BuildControl 에서 disabled prop값 사용하기
+
+```jsx
+<button
+  onClick={props.removed}
+  className={styles.Less}
+  // HTML에 원래 있는 disabled attribule 속성 - false면 default임!
+  disabled={props.disabled}
+  >
+  Less
+</button>
+```
+
