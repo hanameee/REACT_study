@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import styles from "./Person.module.css";
-
 import Aux from "../../../hoc/Aux";
 import AuthContext from "../../../context/auth-context";
 import PropTypes from "prop-types"

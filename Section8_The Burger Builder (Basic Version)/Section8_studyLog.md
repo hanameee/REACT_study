@@ -589,5 +589,37 @@ const buildControl = ( props ) => (
 BuildControls에서 정의한 added props 를 buildControl component에서도 정의해줘야한다!
 More button에 added props 를 바인드 해주면 완료!
 
+
+
 ### 162. Connecting State to Build Controls (2.Removing ingredients)
+
+removeIngredientHandler 은 위에서 한 addIngredientsHandler의 반대 로직으로 짜주면 된다!
+
+```jsx
+removeIngredientHandler = (type) => {
+  const oldCount = this.state.ingredients[type];
+  const updatedCount = oldCount - 1;
+  const updatedIngredients = {
+    ...this.state.ingredients
+  };
+  updatedIngredients[type] = updatedCount;
+
+  const priceDeduction = INGREDIENT_PRICES[type];
+  const oldPrice = this.state.totalPrice;
+  const updatedPrice = oldPrice - priceDeduction;
+
+  this.setState({
+    totalPrice: updatedPrice,
+    ingredients: updatedIngredients
+  })
+}
+```
+
+이후 BuildControls로 넘겨주는 것과, BuildControl에서 정의해 주는 것까지 동일.
+
+다만, ingredient 가 없을때 less를 누르면 
+
+![image-20190915234936297](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915234936297.png)
+
+요런 에러가 뜨게 된다.
 

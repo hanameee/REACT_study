@@ -1,6 +1,6 @@
 ## Section7_Diving Deeper into Components & React Internals
 
-### 100) React 는 어떻게 DOM을 update 하는가?
+## 100) React 는 어떻게 DOM을 update 하는가?
 
 브라우저의 DOM을 어떻게 update 할까?
 
@@ -250,7 +250,7 @@ export default withClass;
 ```javascript
 return (
   <WithClass classes = {styles.App}>
-  ...
+  ....
 	</WithClass>
 )
 ```

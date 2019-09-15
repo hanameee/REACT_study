@@ -6,11 +6,11 @@ import React from "react";
 //     </div>
 // );
 
-const withClass = (WrapperComponent,className) => {
+const withClass = (WrapperComponent, className) => {
     return props => (
-        <div className = {className}>
+        <div className={className}>
             <WrapperComponent {...props}/>
         </div>
-    )
-}
+    );
+};
 export default withClass;
