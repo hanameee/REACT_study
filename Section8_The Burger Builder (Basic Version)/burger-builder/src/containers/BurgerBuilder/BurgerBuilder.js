@@ -1,6 +1,13 @@
 import React , { Component, Fragment } from 'react'; 
 import Burger from "../../components/Burger/Burger"
-import BurgerControls from '../../components/Burger/BuildControls/BuildControls'
+import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+
+const INGREDIENT_PRICES = {
+    salad : 0.5,
+    bacon : 0.7,
+    cheese : 0.4,
+    meat : 0.3
+}
 class BurgerBuilder extends Component {
 
     state = {
@@ -9,14 +16,62 @@ class BurgerBuilder extends Component {
             bacon : 0,
             cheese : 0,
             meat : 0
-        }
+        },
+        totalPrice: 4
+    }
+
+    addIngredientHandler = (type) => {
+        const oldCount = this.state.ingredients[type];
+        const updatedCount = oldCount + 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
+        };
+        updatedIngredients[type] = updatedCount;
+
+        const priceAddition = INGREDIENT_PRICES[type];
+        const oldPrice = this.state.totalPrice;
+        const updatedPrice = oldPrice + priceAddition;
+
+        this.setState({
+            totalPrice: updatedPrice,
+            ingredients: updatedIngredients
+        })
+    }
+
+    removeIngredientHandler = (type) => {
+        const oldCount = this.state.ingredients[type];
+        const updatedCount = oldCount - 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
+        };
+        updatedIngredients[type] = updatedCount;
+
+        const priceSubtraction = INGREDIENT_PRICES[type];
+        const oldPrice = this.state.totalPrice;
+        const updatedPrice = oldPrice - priceSubtraction;
+
+        this.setState({
+            totalPrice: updatedPrice,
+            ingredients: updatedIngredients
+        })
+        // if(updatedCount<0) {
+        //     alert(`There is no ${type} to remove!`);
+        // }else {
+        //     this.setState({
+        //         totalPrice: updatedPrice,
+        //         ingredient: updatedIngredients
+        //     })
+        // }
     }
 
     render() {
         return(
             <Fragment>
                 <Burger ingredients = {this.state.ingredients}/>
-                <BurgerControls/>
+                <BuildControls
+                    ingredientAdded = {this.addIngredientHandler}
+                    ingredientRemoved = {this.removeIngredientHandler}
+                    ingredient = {this.state.ingredients}/>
             </Fragment>
         );
     }

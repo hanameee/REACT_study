@@ -483,3 +483,111 @@ import BurgerControls from '../../components/Burger/BuildControls/BuildControls'
     }
 ```
 
+
+
+### 161. Connecting State to Build Controls (1.Adding ingredients)
+
+이제 진짜 state랑 연결해서 유저가 state를 manage 할 수 있도록 해보자!
+그러려면 burger builder에 몇개의  method가 필요함.
+
+첫번째로는  addIngredientHandler을 추가하자!
+
+(1) 재료추가
+(2) 가격 tracking 할 것임
+
+`BurgerBuilder`
+
+```javascript
+// (2)를 위해 class 밖의 전역 상수로 재료별 가격을 정의해준다
+const INGREDIENT_PRICES = {
+    salad : 0.5,
+    bacon : 0.7,
+    cheese : 0.4,
+    meat : 0.3
+}
+
+...
+
+state = {
+  ingredients: {
+    salad : 0,
+    bacon : 0,
+    cheese : 0,
+    meat : 0
+  },
+  // price tracking을 위해 state에 totalPrice를 추가해준다
+  totalPrice: 4
+}
+
+// class 내에 addHandler를 정의해준다
+addIngredientHandler = (type) => {
+  const oldCount = this.state.ingredients[type];
+  const updatedCount = oldCount + 1;
+  // immutable하게 바꿔야 하니까!
+  const updatedIngredients = {
+    ...this.state.ingredients
+  };
+  updatedIngredients[type] = updatedCount;
+  
+  //price도 유사한 방식으로 update 해준다
+  const priceAddition = INGREDIENT_PRICES[type];
+  const oldPrice = this.state.totalPrice
+  const updatedPrice = oldPrice + priceAddition;
+  
+  //totalPrice와 ingredients를 update해준다
+  this.setState({
+    totalPrice: updatedPrice,
+    ingredients: updatedIngredients
+  })
+}
+
+...
+
+    render() {
+        return(
+            <Fragment>
+                <Burger ingredients = {this.state.ingredients}/>
+								{/*BuildControls의 props로 addIngredientHandler이 바인딩된 ingredientAdded를 넘겨준다*/}
+                <BuildControls
+                    ingredientAdded = {this.addIngredientHandler}/>
+            </Fragment>
+        );
+    }
+```
+
+이렇게 BuildControls에 넘겨준 ingredientAdded prop을 을 BuildControl 에 onClick으로 bind 해줘야 한다.
+
+`BuildControls.js`
+
+```jsx
+const buildControls = ( props ) => (
+    <div className = {styles.BuildControls}>
+        {controls.map(ctrl => (
+            <BuildControl
+             key={ctrl.lable} 
+             lable={ctrl.lable}
+             added={() => props.ingredientAdded(ctrl.type)}/>
+        ))}
+    </div>
+);
+```
+
+BuildControl 에 `added` props를 추가해준다. addIngredientsHandler은 type을 argument로 받으므로, added 에 ingredientAdded를 즉시 실행함수로, ctrl.type argument로 넘겨준다.
+
+`BuildControl.js`
+
+```jsx
+const buildControl = ( props ) => (
+    <div className={styles.BuildControl}>
+        <div className={styles.Lable}>{props.lable}</div>
+        <button className={styles.Less}>Less</button>
+        <button onClick={props.added} className={styles.More}>More</button>
+    </div>
+);
+```
+
+BuildControls에서 정의한 added props 를 buildControl component에서도 정의해줘야한다!
+More button에 added props 를 바인드 해주면 완료!
+
+### 162. Connecting State to Build Controls (2.Removing ingredients)
+
