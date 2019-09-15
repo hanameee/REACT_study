@@ -19,9 +19,7 @@
 
 구조를 개선해보자.
 
-![image-20190901162823725](/Users/hanameee/Library/Application Support/typora-user-images/image-20190901162823725.png)
-
-
+![image-20190901162823725](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190901162823725.png)
 
 src 밑에 assets (이미지 파일 등), components (Persons, Cockpit), containers 으로 경로를 분리했다.
 
@@ -160,7 +158,7 @@ presentational component 는 외부 input (props) 에 의해 정의되므로 app
 
 ### 87) Class-based vs Functional components
 
-![image-20190901211623156](/Users/hanameee/Library/Application Support/typora-user-images/image-20190901211623156.png)
+![image-20190901211623156](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190901211623156.png)
 
 class-based component 도 this를 통해 props 를 쓸 수 있다.
 
@@ -212,7 +210,7 @@ Cockpit component 에 title 을 넣어주면 끝!
 
 Component Lifecycle은 일단 class based component에서만 가능하지만, functional component에서도 가능한 방법이 있고 이건 나중에 배우게 될 것임.
 
-![image-20190901224312195](/Users/hanameee/Library/Application Support/typora-user-images/image-20190901224312195.png)
+![image-20190901224312195](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190901224312195.png)
 
 Child Components 의 lifecycle이 모두 끝나고 난 뒤에야 lifecycle hook이 끝날 것임 (when componentDidMount gets called)
 
@@ -290,7 +288,7 @@ static getDerivedStateFromProps(props,state){
 
 ### 90) Component Lifecycle - [Update for props]
 
-![image-20190902145848216](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902145848216.png)
+![image-20190902145848216](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902145848216.png)
 
 Update lifecycle 을 보기 위해 persons, person component를 functional > classed-based component로 바꿀 것임!
 
@@ -380,7 +378,7 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 이렇게 하고 콘솔 지운뒤 실행해보면 처음에 creation lifecycle이 돌아가고, input에 글자를 바꿔서 props를 update해보면 update lifecycle이 돌아가는 것을 알 수 있다.
 
-![image-20190902163437972](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902163437972.png)
+![image-20190902163437972](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902163437972.png)
 
 예전엔 사용되었던 hook들 : `componentWillReceiveProps `, `componentWillUpdate` 
 더 이상 사용하진 않지만 그냥 historically 존재했었다.
@@ -413,7 +411,7 @@ componentDidUpdate() {
 }
 ```
 
-![image-20190902181108295](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902181108295.png)
+![image-20190902181108295](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902181108295.png)
 
 추가해준 후 (1) 실행 > (2) 버튼클릭 > (3) input 입력 해보면 위의 순서대로 App과 Person, Persons의 lifecycle이 돌아가는 것을 알 수 있다.
 
@@ -548,7 +546,7 @@ componentWillUnmount() {
 }
 ```
 
-![image-20190902220053727](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902220053727.png)
+![image-20190902220053727](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902220053727.png)
 
 button을 눌러 Persons 컴포넌트를 없애면 componentWillUnmount 가 콘솔에 찍히는 것을 볼 수 있다.
 
@@ -622,7 +620,7 @@ render() {
 
 이렇게 하고 remove 버튼을 눌러보면
 
-![image-20190902223859555](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902223859555.png)
+![image-20190902223859555](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902223859555.png)
 
 아래처럼 Cockpit.js 의 clean up 콘솔로그가 찍히는 것을 알 수 있다.
 
@@ -643,7 +641,7 @@ useEffect(() => {
 },);
 ```
 
-![image-20190902232619435](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902232619435.png)
+![image-20190902232619435](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902232619435.png)
 
 update가 실행될 때 2nd useEffect 가 실행되기 전 effect를 clean up 하는 코드가 실행되는 것을 알 수 있다!
 
@@ -693,7 +691,7 @@ const Cockpit = (props) => {
 
 예를 들어 버튼으로 cockpit을 remove 해도, 아래에서 cockpit과 아무 상관 없는 Person과 Persons가 모두 re render 되는 것을 볼 수 있다.
 
-![image-20190902235729826](/Users/hanameee/Library/Application Support/typora-user-images/image-20190902235729826.png)
+![image-20190902235729826](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190902235729826.png)
 
 이걸 고칠 수 있다면 좋겠지!
 
@@ -713,7 +711,7 @@ shouldComponentUpdate(nextProps, nextState) {
 }
 ```
 
-![image-20190903211630981](/Users/hanameee/Library/Application Support/typora-user-images/image-20190903211630981.png)
+![image-20190903211630981](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190903211630981.png)
 
 위에서 보이는 것처럼, 이렇게 shouldComponentUpdate 를 수정하면 cockpit 을 없애도 persons component tree 전체를 virtually re-render 할 필요가 없기에 performance를 크게 향상시킬 수 있다.
 
@@ -737,7 +735,7 @@ lifecycle마다 console.log 찍었을 때는 cockpit만 수정해도 persons가 
 
 아래 사진을 보면 input을 바꿀 때마다 functional component 인 `cockpit.js` 의 코드가 (아무 변경사항이 없는데도) 실행되는 것을 볼 수 있다.
 
-![image-20190903221429984](/Users/hanameee/Library/Application Support/typora-user-images/image-20190903221429984.png)
+![image-20190903221429984](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190903221429984.png)
 
 Cockpit의 re-rendering에 관여하는 요소는 
 

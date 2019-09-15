@@ -30,7 +30,7 @@ Application state 란 = 내가 application에서 사용하고 조작할 data!
 
 ### 149. 리액트 앱 기획하기 2 - Layout and Component Tree
 
-![image-20190908214759885](/Users/hanameee/Library/Application Support/typora-user-images/image-20190908214759885.png)
+![image-20190908214759885](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190908214759885.png)
 
 이렇게 root App component에서 시작해 Layout을 짜고, component tree를 구성한다!
 
@@ -161,7 +161,7 @@ component들이 늘어나면 비단 stateless / stateful 로 폴더를 구분하
 
 그래야 manageable 하기 때문에 :)
 
-![image-20190913000424317](/Users/hanameee/Library/Application Support/typora-user-images/image-20190913000424317.png)
+![image-20190913000424317](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190913000424317.png)
 
 이렇게 디렉토리를 구성해주고, css는 강의에 있는 코드를 복사!
 
@@ -363,7 +363,7 @@ const burger = props => {
 
 React로 inspect해보면 아래와 같이 key 값이 의도대로 잘 먹혀서 JSX들이 리턴되는 것을 볼 수 있다.
 
-![image-20190915170001168](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915170001168.png)
+![image-20190915170001168](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190915170001168.png)
 
 
 
@@ -400,7 +400,7 @@ if(transformedIngredients.length === 0) {
 
 BuildControls 내에 여러개의 BuildControl이 있는 구조로 짤 것임. 아래처럼 만들어주자.
 
-![image-20190915175851704](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915175851704.png)
+![image-20190915175851704](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190915175851704.png)
 
 BuildControls, BuildControl 모두 functional component로!
 
@@ -619,7 +619,7 @@ removeIngredientHandler = (type) => {
 
 다만, ingredient 가 없을때 less를 누르면 
 
-![image-20190915234936297](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915234936297.png)
+![image-20190915234936297](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190915234936297.png)
 
 요런 에러가 뜨게 된다.
 
