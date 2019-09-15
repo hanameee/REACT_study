@@ -19,6 +19,7 @@ const buildControls = ( props ) => (
         ))} */}
         {Object.keys(props.ingredient).map(ctrl => (
             <BuildControl
+                disabled={props.disabled[ctrl]}
                 key={ctrl}
                 lable={ctrl}
                 added={() => props.ingredientAdded(ctrl)}

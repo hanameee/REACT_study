@@ -40,10 +40,14 @@ class BurgerBuilder extends Component {
 
     removeIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
+        if(oldCount <= 0) {
+            return;
+        }
         const updatedCount = oldCount - 1;
         const updatedIngredients = {
             ...this.state.ingredients
         };
+
         updatedIngredients[type] = updatedCount;
 
         const priceDeduction = INGREDIENT_PRICES[type];
@@ -54,6 +58,8 @@ class BurgerBuilder extends Component {
             totalPrice: updatedPrice,
             ingredients: updatedIngredients
         })
+
+        // Q. 얘는 왜 안되는 걸까?
         // if(updatedCount<0) {
         //     alert(`There is no ${type} to remove!`);
         // }else {
@@ -65,10 +71,18 @@ class BurgerBuilder extends Component {
     }
 
     render() {
+        const disableInfo = {
+            ...this.state.ingredients
+        };
+        for(let key in disableInfo){
+            disableInfo[key]= (disableInfo[key]<=0)
+            //{salad:true, meat:false ...}
+        }
         return(
             <Fragment>
                 <Burger ingredients = {this.state.ingredients}/>
                 <BuildControls
+                    disabled = {disableInfo}
                     ingredientAdded = {this.addIngredientHandler}
                     ingredientRemoved = {this.removeIngredientHandler}
                     ingredient = {this.state.ingredients}/>
