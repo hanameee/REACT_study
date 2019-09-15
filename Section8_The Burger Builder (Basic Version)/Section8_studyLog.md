@@ -398,11 +398,88 @@ if(transformedIngredients.length === 0) {
 
 유저가 재료를 추가할 수 있도록 Build Control Component 를 추가해보자. 이건 functional component임!
 
-BuildControls 내에 여러개의 BuildControl이 있는 구조로 짤 것임.
+BuildControls 내에 여러개의 BuildControl이 있는 구조로 짤 것임. 아래처럼 만들어주자.
 
-`Burger/BuildControls/BuildControls.js`
+![image-20190915175851704](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915175851704.png)
 
-```javascript
+BuildControls, BuildControl 모두 functional component로!
 
+`BuildControls.js`
+
+```jsx
+import React from 'react';
+import styles from './BuildControls.module.css'
+
+const buildControls = ( props ) => (
+    <div >
+
+    </div>
+);
+
+export default buildControls;
+```
+
+`BuildControl.js`
+
+```jsx
+import React from 'react';
+import styles from './BuildControl.module.css'
+
+const buildControl = ( props ) => (
+    <div className={styles.BuildControl}>
+        <div className={styles.Lable}>{props.lable}</div>
+        <button className={styles.Less}>Less</button>
+        <button className={styles.More}>More</button>
+    </div>
+);
+
+export default buildControl;
+```
+
+ 
+
+###160. Outputting Multiple Build Controls
+
+만들어놓은 BuildControl 들을 BurgerControls 에 포함시키고, 이걸 BurgerBuilder에서 뿌려주도록 해보자.
+
+일단 control 할 재료들을 하드코딩으로 넣어놓기!
+
+`BurgerControls`
+
+```jsx
+const controls = [
+    { lable: 'Salad' , type: 'salad'},
+    { lable: 'Bacon' , type: 'bacon'},
+    { lable: 'Cheese' , type: 'cheese'},
+    { lable: 'Meat' , type: 'meat'}
+];
+
+const buildControls = ( props ) => (
+    <div className = {styles.BuildControls}>
+    		{/*controls의 array 원소 하나하나에 대해서 BuildControl JSX를 가져와 리턴한당*/}
+        {controls.map(ctrl => (
+            <BuildControl key={ctrl.lable} lable={ctrl.lable}/>
+        ))}
+    </div>
+);
+```
+
+`BurgerBuilder`
+
+```jsx
+// BurgerControls import 해오고
+import BurgerControls from '../../components/Burger/BuildControls/BuildControls'
+
+...
+
+    render() {
+        return(
+            <Fragment>
+                <Burger ingredients = {this.state.ingredients}/>
+								//BurgerControls를 self-closing tag로 넣어준다
+                <BurgerControls/>
+            </Fragment>
+        );
+    }
 ```
 
