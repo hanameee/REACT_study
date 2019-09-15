@@ -141,7 +141,7 @@ const cockpit = props => {
 
 **위의 코드는 아래와 같은 에러가 난다**
 
-![image-20190906011037265](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190906011037265.png)
+![image-20190906011037265](../images/image-20190906011037265.png)
 
 왜일까? 이 에러를 이해하기 위해서는 React hook 이 어떻게 동작하는지를 잘 알아야한다.
 

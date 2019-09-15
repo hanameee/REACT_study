@@ -10,7 +10,7 @@
 
 render() 이 호출된 이후 React의 updating process는 다음과 같다.
 
-![image-20190904192004210](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190904192004210.png)
+![image-20190904192004210](../images/image-20190904192004210.png)
 
 STEP1.Old Virtual DOM과 Re-rendered Virtual DOM 비교
 
@@ -128,11 +128,11 @@ export default aux;
 
 아래가 기존에 `<div className = {styles.Person}>` 이라는 wrapping div 가 있었을 때
 
-![image-20190904215254895](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190904215254895.png)
+![image-20190904215254895](../images/image-20190904215254895.png)
 
 아래 hoc를 써서 Aux로 wrapping 했을 때
 
-![image-20190904215237632](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190904215237632.png)
+![image-20190904215237632](../images/image-20190904215237632.png)
 
 
 
@@ -317,7 +317,7 @@ behind the scenes logic (some Javascript code that handles errors or sends analy
 
 `App.js` 에서 App component에 withClass hoc를 적용한 것처럼 `Person.js` 에도 적용해보자!
 
-![image-20190904235041986](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190904235041986.png)
+![image-20190904235041986](../images/image-20190904235041986.png)
 
 적용해보면, className styles는 잘 먹혔는데 data가 다 날라간 것을 볼 수 있다.
 
@@ -500,7 +500,7 @@ Name, age, changed, click 등의 prop을 받고 있는 것을 볼 수 있다.
 
 이렇게 proptype을 정해주고 난 후 `App.js` 에서 age prop을 string으로 변경해보면 아래와 같은 에러가 뜬다.
 
-![image-20190905232036726](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190905232036726.png)
+![image-20190905232036726](../images/image-20190905232036726.png)
 
 협업할 때 development mode에서 잘못된 proptype을 잡아낼 수 있으니까 유용하다.
 
