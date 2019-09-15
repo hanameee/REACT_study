@@ -392,3 +392,17 @@ if(transformedIngredients.length === 0) {
 // transformedIngredients를 먼저 let으로 바꿔줘야 한다
 ```
 
+
+
+### 159. Adding the BuildControls & BuildControl Component
+
+유저가 재료를 추가할 수 있도록 Build Control Component 를 추가해보자. 이건 functional component임!
+
+BuildControls 내에 여러개의 BuildControl이 있는 구조로 짤 것임.
+
+`Burger/BuildControls/BuildControls.js`
+
+```javascript
+
+```
+
