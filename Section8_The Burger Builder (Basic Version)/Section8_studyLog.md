@@ -365,3 +365,30 @@ React로 inspect해보면 아래와 같이 key 값이 의도대로 잘 먹혀서
 
 ![image-20190915170001168](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915170001168.png)
 
+
+
+### 158. Calculating the Ingredient Sum Dynamically
+
+ingredients 가 없으면 재료를 넣으세요! 라고 하고 싶다고 해보자.
+지금 transformedIngredients는 어떻게 생겼냐?  state를 모두 0으로 수정해도
+
+`[Array(0), Array(0), Array(0), Array(0)]` 이렇게 뜸.
+
+reduce를 사용해 array를 flatten 시켜보자 :)
+
+```javascript
+const transformedIngredients = Object.keys(...).map(...).reduce((arr,el) => {
+  return arr.concat(el);
+},[])
+// 이렇게 하면 empty array에 원소들이 합쳐지므로 빈 array들이 모두 사라진당
+```
+
+이렇게 하면 이제 transformedIngredients의 lenght로 재료가 있는지 없는지 체크할 수 있지
+
+```javascript
+if(transformedIngredients.length === 0) {
+  transformedIngredients = <p>please start adding ingredients!</p>
+}
+// transformedIngredients를 먼저 let으로 바꿔줘야 한다
+```
+
