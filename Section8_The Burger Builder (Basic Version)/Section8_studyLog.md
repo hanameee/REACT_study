@@ -1,4 +1,4 @@
-## Section8_ A Real App: The Burger Builder (Basic Version)
+Section8_ A Real App: The Burger Builder (Basic Version)
 
 
 
@@ -623,3 +623,6 @@ removeIngredientHandler = (type) => {
 
 요런 에러가 뜨게 된다.
 
+
+
+![image-20190915234936297](../images/image-20190915234936297.png)
