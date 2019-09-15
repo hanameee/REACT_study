@@ -300,3 +300,68 @@ export default burger;
 
 하지만 지금은 모든 Burger에 대한 것들이 hardcode 되어있는 상태. 동적으로 버거를 바꿀 수 없다!
 다음 강의에서 재료를 state로 관리하고 동적으로 render 하는 법을 배울 것.
+
+
+
+### 157. Outputting Burger Ingredient dynamically
+
+Burger Builder에 state를 추가해보자.
+
+`BurgerBuilder.js`
+
+```javascript
+// state 내에 ingredients 를 key-value 형태의 object로 추가해준다
+state = {
+  ingredients: {
+    salad : 1,
+    bacon : 1,
+    cheese : 2,
+    meat : 2
+  }
+}
+
+...
+
+render() {
+  return(
+    <Fragment>
+    	// Burger에 ingredients props를 전달해준다
+    	<Burger ingredients = {this.state.ingredients}/>
+			<div>Build Controls</div>
+		</Fragment>
+);
+}
+```
+
+Burger component에서 object 형태로 온 ingredients props를 받아 array of the values of the ingredients 로 convert 해야 한다.
+
+`Burger.js`
+
+```jsx
+const burger = props => {
+    // Object.keys 는 default JS method로 object의 keys를 뽑아내어 새로운 array로 리턴한다 ("salad","bacon","cheese","meat")
+    const transformedIngredients = Object.keys(props.ingredients).map(igKey => {
+      // igKey는 "salad", "bacon" 등...
+      // 그냥 이 Array의 length가 중요하당 (n개의 JSX element를 return하려고)!
+        return [...Array(props.ingredients[igKey])].map((_,i) => {
+          	// 여기서의 type은 BurgerIngredients의 prop type check에서 switch 문으로 정의했던 애랑 정확히 일치해야함! 중요중요 
+            return <BurgerIngredient key = {igKey+i} type = {igKey}/>
+        });
+    });
+    return (
+        <div className={styles.Burger}>
+            <BurgerIngredient type="bread-top" />
+            {transformedIngredients}
+            <BurgerIngredient type="bread-bottom" />
+        </div>
+    );
+};
+
+```
+
+이제 완벽한 dynamic은 아니지만 적어도 ingredients들을 hardcode 하진 않았다! generic 한 map method를 가지게 되었기 때문에 :)
+
+React로 inspect해보면 아래와 같이 key 값이 의도대로 잘 먹혀서 JSX들이 리턴되는 것을 볼 수 있다.
+
+![image-20190915170001168](/Users/hanameee/Library/Application Support/typora-user-images/image-20190915170001168.png)
+
