@@ -20,7 +20,7 @@
 
 Application state 란 = 내가 application에서 사용하고 조작할 data!
 
-예를 들어 우리의 burger app에서는 사용자가 추가한 Ingredients에 대한 정보를 트래킹해야한다. 그 정보를 바탕으로 우리가 render 할 정보들과 유저가 마지막에 지불해야할 값을 결정하기 때문에.
+예를 들어 우리의 burger app에서는 사용자가 추가한 Ingredients에 대한 정보를 트래킹 해야한다. 그 정보를 바탕으로 우리가 render 할 정보들과 유저가 마지막에 지불해야할 값을 결정하기 때문에.
 
 #### 3. Components vs Containers
 
@@ -38,7 +38,7 @@ Application state 란 = 내가 application에서 사용하고 조작할 data!
 
 ### 150. 리액트 앱 기획하기 3 - State 기획
 
-State를 짜야 어떤게 container이고 어떤게 component인지, 또 어떤게 stateless이고 어떤게 stateful component인지 알 수가 있어용
+State를 짜야 어떤게 container이고 어떤게 component인지, 또 어떤게 stateless이고 어떤게 stateful component인지 알 수가 있다.
 
 
 
@@ -112,7 +112,7 @@ import Layout from './components/Layout/Layout'
 function App() {
   return (
     <div className = {styles.App}>
-      //props.childeren 으로 이 Layout 태그 안에 있는 놈들을 가져와 렌더링한다
+      //props.childeren 으로 이 Layout 태그 안의 내용을 가져와 렌더링한다
       <Layout>
         <p>say ho~~~~~</p>
       </Layout>
@@ -217,7 +217,8 @@ prop-types 패키지를 아래의 명령어로 설치한다.
 
 ` yarn install --save prop-types`
 
-강의에서는 prop-type을 쓰기 위해 BurgerIngredient.js 를 functional component > class based component로 바꿨는데 사실 그냥 functional 에서 써도 무방하다고 한다.
+강의에서는 prop-type을 쓰기 위해 BurgerIngredient.js 를 functional component > class based component로 바꿈.
+그렇지만 사실 그냥 functional component 써도 무방하다고 한다.
 
 ```jsx
 // class based니까 component 추가해주기
