@@ -134,6 +134,14 @@ return(
     <Burger ingredients = {this.state.ingredients}/>
 ```
 
+이제 ingredients state를 바탕으로 Modal의 props.child로 들어갈 OrderSummary를 만들어내야 하는데, 이미 BurgerBuilder이 포화상태고 최대한 outsource해서 granular, focused components를 만드는 것이 좋으니 OrderSummary를 분리하자!
+
+`components/Burger/OrderSummary/OrderSummary.js`
+
+```jsx
+
+```
+
 
 
 `components/UI/Backdrop/Backdrop.js`
