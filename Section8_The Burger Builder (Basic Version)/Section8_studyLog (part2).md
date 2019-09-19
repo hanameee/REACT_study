@@ -102,3 +102,38 @@ removeIngredientHandler = (type) => {
 }
 ```
 
+
+
+### 165.Creating the Order Summary Modal
+
+이제 order 버튼을 클릭하면 modal이 뜨도록 하고 싶다. (1)modal (2)backdrop=배경막 (3)주문서 이렇게 3개가 필요함!
+
+`components/UI/Modal/Modal.js`
+
+```jsx
+import React from 'react';
+import styles from './Modal.module.css';
+
+const modal = ( props ) => (
+    <div className = {styles.Modal}>
+        {props.children}
+    </div>
+)
+
+export default modal;
+```
+
+modal은 결과적으로 특정 원소를 감싸는 div여야 한다. 이 modal을 어디에 추가할 것인가? 실제로 Modal을 띄우고, Modal에 필요한 state와 method를 가지고 있는 BurgerBuilder에서! 
+
+`BurgerBuilder.js`
+
+```jsx
+return(
+  <Fragment>
+    <Modal/>
+    <Burger ingredients = {this.state.ingredients}/>
+```
+
+
+
+`components/UI/Backdrop/Backdrop.js`
