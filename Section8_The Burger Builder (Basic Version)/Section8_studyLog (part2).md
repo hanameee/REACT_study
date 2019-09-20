@@ -16,6 +16,7 @@ const buildControls = ( props ) => {
 Price는 BurgerBuilder의 totalPrice state에서 관리된다.
 
 `BurgerBuilder.js`
+
 ```jsx
 ...
 return (
@@ -104,7 +105,7 @@ removeIngredientHandler = (type) => {
 
 
 
-### 165.Creating the Order Summary Modal
+### 165. Creating the Order Summary Modal
 
 이제 order 버튼을 클릭하면 modal이 뜨도록 하고 싶다. (1)modal (2)backdrop=배경막 (3)주문서 이렇게 3개가 필요함!
 
@@ -138,10 +139,132 @@ return(
 
 `components/Burger/OrderSummary/OrderSummary.js`
 
-```jsx
+ BurgerBuilder 로부터 instruction을 받아, 주문 내용을 보여주기! 여러 jsx를 리턴해야하므로 Fragment hoc를 사용한다.
 
+```jsx
+import React, {Fragment} from react;
+
+const orderSummary = (props) => {
+  const ingredientSummary = Object.keys(props.ingredients).map(
+    igKey => {
+      return (
+      	<li key = {igKey}>
+          <span style={{textTransform:"capitalize"}}>{igKey}</span>:{props.ingredients[igKey]}
+        </li>
+      )
+    }
+  )
+  return (
+    <Fragment>
+      <h3>Your order</h3>
+      <p>A delicious burger with the following ingredients:</p>
+      <ul>
+        {ingredientSummary}
+      </ul>
+      <p>continue to Checkout?</p>
+    </Fragment>
+  )
+}
+
+export default orderSummary;
+```
+
+이렇게 OrderSummary를 완성해주고, 이걸 BurgerBuild에서 사용하자!
+
+`BurgerBuilder.js`
+
+```jsx
+...
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+return(
+  <Fragment>
+    {/* 이렇게 Modal 안의 child로 OrderSummary를 넣어주기 */}
+    <Modal><OrderSummary ingredients={this.state.ingredients}/></Modal>
+    ...
 ```
 
 
 
-`components/UI/Backdrop/Backdrop.js`
+###166. Showing & Hiding the Modal
+
+지금은 modal 이 항상 보이고 있는데, 이걸 order button이 clicked 되었을 때만 보이도록 바꾸자.
+(1) state에 `purchasing` 을 추가하고 (default : false)
+(2) purchaseHandler을 통해 관리하자
+
+`BurgerBuilder`
+
+```jsx
+class BurgerBuilder extends Component {
+
+    state = {
+      	...
+        purchasing: false
+    }
+
+		// this 바인딩 조심 - 더 공부
+    purchaseHandler = (props) => {
+        this.setState({purchasing : true});
+    }
+```
+
+Order button은 BuildControls에 있으니까, BuildControls의 prop으로 전달해준다!
+
+```jsx
+return(
+  <Fragment>
+    <Modal><OrderSummary ingredients={this.state.ingredients}/></Modal>
+    <Burger ingredients = {this.state.ingredients}/>
+    <BuildControls
+      ...
+      ordered = {this.purchaseHandler}
+      ...
+  </Fragment>
+);
+```
+
+그리고 BuildControls의 button에다가 onClick 으로 주면 되겠지!
+
+`BuildControls`
+
+```jsx
+<button 
+  disabled = {!props.purchasable} 
+  className = {styles.OrderButton}
+  {/* 이렇게 주면 됩니당 */}
+  onClick = {props.ordered}>
+  ORDER NOW
+</button>
+```
+
+
+
+이제 purchasing state의 상태에 따라 Modal을 conditionally render 하면 되겠지!
+그런데 이번에는 사라지고 나타날 때 animation을 주고 싶으니, css를 바꾸는 식으로 해볼 것.
+
+`BurgerBuilder.js`
+
+```jsx
+{/* Modal에 show prop을 pass 해주고 purchasing state를 bind 해주자 */}
+<Modal show = {this.state.purchasing}>
+```
+
+`Modal.js`
+
+이제 show property에 따라 Modal을 바꿔볼 것임
+
+`Modal.js`
+
+```jsx
+const modal = ( props ) => (
+    <div 
+    className = {styles.Modal}
+    // 첫번째 bracelet은 dynamic을 위해, 두번째 bracelet은 JS object쓰려고
+    style = {{
+      	// props.show가 true면 보이고, false면 안보임 - transform 공부
+        transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
+        opacity : props.show ? '1':'0'
+    }}>
+```
+
+이렇게 주면 끝!
+
