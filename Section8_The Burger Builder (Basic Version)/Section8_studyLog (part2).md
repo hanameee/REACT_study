@@ -356,3 +356,30 @@ purchaseCancleHandler = () => {
 
 ### 168. Adding a Custom Button Component
 
+계속 주문하기 (continue), 주문 취소하기(candle) 버튼을 만들어보자!
+이건 Modal 안의 orderSummary에서 관리해야겠지.
+
+`OrderSummary`
+
+```jsx
+<Fragment>
+  ...
+  <p>continue to Checkout?</p>
+  <button>CANCLE</button>
+  <button>CONTINUE</button>
+</Fragment>
+```
+
+일단 지금은 두 버튼 모두 backdrop을 클릭했을때 모달이 닫히는 거랑 유사하게 작동해야 함. continue를 만드려면 주문을 서버에 보내고 그런 작업이 필요하니까! 이건 차차 할 것임.
+
+버튼 스타일링을 재사용 할 수 있도록 outsource 해보자.
+
+`UI/Button/Button.js`
+
+```jsx
+
+```
+
+
+
+`UI/Button/Button.module.css`
