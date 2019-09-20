@@ -268,3 +268,91 @@ const modal = ( props ) => (
 
 이렇게 주면 끝!
 
+
+
+###167. Implementing the Backdrop Component
+
+모달 뜰때 뒤에 깔리는 Backdrop을 만들어보자.
+
+`UI/Backdrop/Backdrop.js`
+
+```jsx
+import React from 'react';
+import styles from './Backdrop.module.css'
+
+// prop을 받아 show가 true면 Backdrop class와 onClick event를 가진 div를 리턴하고, 아니면 null을 리턴
+const backdrop = (props) => (
+   props.show ? <div className = {styles.Backdrop} onClick = {props.clicked}></div> : null
+);
+
+export default backdrop;
+```
+
+`Backdrop.module.css`
+
+```css
+.Backdrop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    /* above other element, but below modal */
+    z-index: 100;
+  	/* 좌측상단부터 시작 */
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+```
+
+
+
+이 Backdrop은 모달이 뜰때 뒤에 깔리는 거니까, Modal에 추가해주자!
+
+`Modal.js`
+
+```jsx
+import React, { Fragment } from "react";
+import styles from "./Modal.module.css";
+import Backdrop from "../Backdrop/Backdrop";
+const modal = props => (
+    <Fragment>
+  			{/*Backdrop을 modal과 나란히 놓아야하니까 hoc = Fragment 사용*/} 
+        <Backdrop show={props.show}/>
+        <div
+```
+
+
+
+또,  Backdrop을 누르면 Modal이 꺼지도록! 아까 Backdrop component에 줬던 `onClick = {props.clicked}` 을 Backdrop을 사용하는 Modal에서 활용하자
+
+```jsx
+const modal = props => (
+    <Fragment>
+  			{/*clicked prop에 props.modalClosed를 바인딩*/} 
+        <Backdrop show={props.show} clicked={props.modalClosed}/>
+        <div
+```
+
+여기서의 prop은 `BurgerBuilder` 로부터 왔으므로
+
+```jsx
+purchaseCancleHandler = () => {
+  // 주문을 취소하는거니까 purchasing state를 다시 false로 해준다
+  this.setState({ purchasing: false });
+};
+
+...
+
+<Modal
+  show={this.state.purchasing}
+  {/*modalClosed에 purchaseCancleHandler을 엮어준다*/}
+  modalClosed={this.purchaseCancleHandler}
+  >
+```
+
+이렇게 해주면 backdrop을 클릭했을때 backdrop도 null이 되고 (show가 false가 되므로), modal도 css style이 변경되어 보이지 않게 된다. (with animation)
+
+
+
+### 168. Adding a Custom Button Component
+
