@@ -338,7 +338,7 @@ const modal = props => (
 ```jsx
 purchaseCancleHandler = () => {
   // 주문을 취소하는거니까 purchasing state를 다시 false로 해준다
-  this.setState({ purchasing: false });
+  this.setState({ purchasing: false }); 
 };
 
 ...
@@ -354,7 +354,7 @@ purchaseCancleHandler = () => {
 
 
 
-### 168. Adding a Custom Button Component
+###   168. Adding a Custom Button Component
 
 계속 주문하기 (continue), 주문 취소하기(candle) 버튼을 만들어보자!
 이건 Modal 안의 orderSummary에서 관리해야겠지.
@@ -377,9 +377,49 @@ purchaseCancleHandler = () => {
 `UI/Button/Button.js`
 
 ```jsx
+import React from "react";
+import styles from "./Button.module.css"
+const button = props => (
+    <button onClick={props.clicked}
+    className={[styles.Button, styles[props.btnType]].join(' ')}>{props.children}</button>
+);
 
+export default button;
 ```
 
-
-
 `UI/Button/Button.module.css`
+강의에서 준 파일 사용
+
+`OrderSummary`
+
+```jsx
+<Fragment>
+  ...
+  <Button btnType='Danger' clicked={props.purchaseCancelled}>CANCLE</Button>
+  <Button btnType='Success' clicked={props.purchaseContinued}>CONTINUE</Button>
+```
+
+Button 에 btnType과 clicked를 주고, clicked에서는 OrderSummary를 사용하는 BurgerBuilder에서
+
+`BurgerBuilder`
+
+```jsx
+purchaseCancleHandler = () => {
+  this.setState({ purchasing: false });
+};
+
+purchaseContinueHandler = () => {
+  alert("You continue!");
+};
+
+...
+
+<OrderSummary
+  ingredients={this.state.ingredients}
+  purchaseCancelled={this.purchaseCancleHandler}
+  purchaseContinued={this.purchaseContinueHandler}
+  />
+```
+
+이렇게  purchaseCancleHandler과 purchaseCoutinueHandler을 만들어 준다.
+
