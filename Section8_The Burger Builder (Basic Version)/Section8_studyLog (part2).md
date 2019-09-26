@@ -423,3 +423,53 @@ purchaseContinueHandler = () => {
 
 이렇게  purchaseCancleHandler과 purchaseCoutinueHandler을 만들어 준다.
 
+
+
+### 171. Adding a Toolbar
+
+ `components/Navigation/Toolbar/Toolbar.js`
+
+```jsx
+import React from 'react';
+import styles from "./Toolbar.module.css";
+
+const toolbar = (props) => (
+    <header className = {styles.Toolbar}>
+        <div>MENU</div>
+        <div>LOGO</div>
+        <nav>
+            ...
+        </nav>
+    </header>
+)
+export default toolbar;
+```
+
+상응하는 css도 추가.
+
+그럼 이 toolbar을 어디에 추가할까? BurgerBuilder 외에도, 우리가 Load하는 모든 page에다가 toolbar을 추가하고 싶으니까 Layout에 추가하면 좋겠지 :)
+
+`Layout.js`
+
+```jsx
+...
+import Toolbar from '../Navigation/Toolbar/Toolbar'
+const layout = ( props ) => (
+    <Fragment>
+        <Toolbar/>
+    		...
+)
+
+export default layout;
+```
+
+이렇게 추가를 해줍니다!
+
+
+
+### 172. Using a Logo in our Application
+
+Logo를 navigation에 추가하는 것이 아니라, component로 추가해 줄것임. 이후 Application의 어디에서도 사용할 수 있기 때문에!
+
+`components/Logo/Logo.js`
+
