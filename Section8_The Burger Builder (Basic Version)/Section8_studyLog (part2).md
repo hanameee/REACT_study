@@ -469,7 +469,67 @@ export default layout;
 
 ### 172. Using a Logo in our Application
 
-Logo를 navigation에 추가하는 것이 아니라, component로 추가해 줄것임. 이후 Application의 어디에서도 사용할 수 있기 때문에!
+Logo를 navigation에 추가하는 것이 아니라, **component로 추가**해 줄것임. 이후 Application의 어디에서도 사용할 수 있기 때문에!
 
 `components/Logo/Logo.js`
+
+```jsx
+import React from 'react';
+import styles from './Logo.module.css'
+import burgerLogo from '../../assets/images/burger-logo.png';
+const logo = (props) => (
+    <div className = {styles.Logo}>
+        {/* 결국 webpack이 모든 파일을 bundle할것이기에 src에 주소를 주면 안되고 import해서 가져와야 한다. 이렇게 해야 webpack이 내가 해당 이미지를 사용하는 것을 알 수 있다. */}
+        <img src={burgerLogo} alt="MyBurger"/>
+    </div>
+);
+
+export default logo;
+```
+
+이렇게 해주고, Toolbar에 추가해준다!
+
+`Toolbar.js`
+
+```jsx
+...
+import Logo from '../../Logo/Logo'
+...
+const toolbar = (props) => (
+    <header className = {styles.Toolbar}>
+        <div>MENU</div>
+        <Logo/>
+    		...
+export default toolbar;
+```
+
+
+
+**🔑 KEY TAKEAWAYS 🔑**
+
+`Logo.js` 에서 src/assets/images 에 있는 png 파일을 가져올 때, `<img src = ... >` jsx 태그 안에  png 파일의 상대경로를 입력하면 작동하지 않는다.
+
+왜일까?😯
+
+React의 build workflow가 set up 되는 과정을 생각해보면, webpack이 모든 파일을 가져가다 bundle하고, 새로운 output folder을 만들 것임. 이 과정들은 메모리 상에서 일어나기에 development 할 때는 알 수 없지만, 이후 앱을 배포하고 나면 우리는 optimized, compiled, bundled 된 assets들이 들어있는 새로운 폴더가 생기게 된다.
+
+따라서 `../../assets/images/burger-logo.png` 이 위치에 있는 assets들은 실제 서버에 전달되지 않는다. 애초에 전체 src 폴더가 서버로 전달되지 않는다!
+
+그렇다면 해결방법은? 😯 
+
+아래처럼 `import` 를 사용해서 우리가 Image를 여기서 가져다 쓴다고 webpack에게 알려줘야 함.
+
+```js
+import burgerLogo from '../../assets/images/burger-logo.png';
+```
+
+이렇게 알려주면 웹팩은 이 이미지를 special plug-in or a special module (that was added to webpack, to its config) 을 사용해 handle 할 것임.
+
+이미지를 새롭게 생성된 destination directory 에 복사하고, (only in memory during development) 최적화도 할 것임!
+
+```jsx
+<img src={burgerLogo} alt="MyBurger"/>
+```
+
+src에 상대경로가 아니라 이렇게 dynamic 하게 가져오게 되면 이건 path where webpack stored the optimized and copied image 를 의미한다 :)
 
