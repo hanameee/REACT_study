@@ -533,3 +533,28 @@ import burgerLogo from '../../assets/images/burger-logo.png';
 
 src에 상대경로가 아니라 이렇게 dynamic 하게 가져오게 되면 이건 path where webpack stored the optimized and copied image 를 의미한다 :)
 
+
+
+### 173. Adding Reusable Navigation Items
+
+Navigation item들도 나중에 sidebar에서 재활용 할 거라서 따로 outsource 하자!
+또한, 각 item들도 꽤나 스타일링을 많이 해줄거니까, item으로 따로 빼서 관리하자.
+
+`components/Navigation/NavigationItems/NavigationItems.js`
+
+```jsx
+import React from 'react';
+
+const navigationItems = (props) => (
+    <ul>
+        <li><a href = "">A Link</a></li>
+    </ul>
+);
+
+export default navigationItems;
+```
+
+`components/Navigation/NavigationItems/NavigationItem/NavigationItem.js`
+
+이친구는 individual navigation item을 들고 있는것임!
+
