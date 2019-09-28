@@ -271,3 +271,4 @@ global이 된다
 2) Inline styles로 하는 법
 
 inline을 하면 styling이 scoped to the component 되나, css
+

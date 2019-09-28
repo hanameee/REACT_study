@@ -48,14 +48,14 @@ React에서 사용하는 custom component, 위에서 살펴본 input 등을 포�
 
 ```jsx
 class Person extends Component {
-  // (3)componentDidMount는 render뒤에 실행되기에 이미 ihis.inputElement에는 inputEl이 들어가 있을 거야. (내가 ref 속성을 준 element에 대한 참조값)
+  // (3)componentDidMount는 render뒤에 실행되기에 이미 this.inputElement에는 inputEl이 들어가 있을 거야. (내가 ref 속성을 준 element에 대한 참조값)
   componentDidMount() {
     this.inputElement.focus();
   }
   
 <input
   // (1)ref에 익명함수를 준다! argument는 내가 ref 속성을 준 그 element에 대한 참조값이다 (원하는 이름을 쓰면 된다)
-  ref={(inputEl) = {this.inputElement = inputEl}}
+  ref={(inputEl) => {this.inputElement = inputEl}}
   // (2)class에 inputElement라는 새로운 속성을 할당하고, 그 속성을 argument로 받은 inputEl로 설정하는것임!
   type="text"
   onChange={this.props.changed}
@@ -67,7 +67,7 @@ class Person extends Component {
 
    ```javascript
    ref = {
-     (ref속성준원소참조할이름) = {this.새로운속성 = ref속성준원소참조할이름}
+     (ref속성준원소참조할이름) => {this.새로운속성 = ref속성준원소참조할이름}
    }
    ```
 
@@ -418,8 +418,6 @@ return (
 )
 ```
 
-
-
 정리하자면, functional component 에서는 `useContext()` hook 을, class based component에서는 `contextType` 을 이용해서 보다 더 편리하게 context를 사용할 수 있다.
 
 context API는 components 간에 props 를 줄줄이 거치지 않고도 data를 manage 할 수 있도록 도와준다. 나중에 Redux 랑도 연결될 것이고, 중요한 부분이니 꼭 기억해둘것!
@@ -430,3 +428,4 @@ context API는 components 간에 props 를 줄줄이 거치지 않고도 data를
 
 이 module (Section7) 은 나중에 API reference 처럼 찾아볼 것.
 다양한 것들에 대한 broad overview를 제공했던 모듈이기에!
+
