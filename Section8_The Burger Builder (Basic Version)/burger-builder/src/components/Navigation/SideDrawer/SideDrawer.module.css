@@ -10,5 +10,18 @@
     padding: 32px 16px;
     box-sizing: border-box;
     transform: transform 0.3s ease-out;
+}
 
+@media (min-width: 500px) {
+    .SideDrawer {
+        display: none;
+    }
+}
+
+.Open {
+    transform: translateX(0)
+}
+
+.Closed {
+    transform: translateX(-100%)
 }
