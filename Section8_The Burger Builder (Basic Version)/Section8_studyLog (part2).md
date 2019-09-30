@@ -687,3 +687,4 @@ Navigation Items도 Logo처럼 responsive하게 바꿔보자.
 기존에 존재하던 CSS를 media query안으로 놓고,  base classes를 mobile에 맞도록 수정하면 된다. 이 때 Mobile에 있는 base classes는 자동으로 Desktop에 merged 되므로 중복해서 선언해줄 필요가 없으니 삭제해주기.
 
 나아가, media query를 써서 발생하는 몇가지 css issue들 (sideDrawer이 켜져도 toolbar의 navigation items가 계속해서 보이는 문제라던가)을 수정해주면 끝!
+

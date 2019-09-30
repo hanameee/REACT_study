@@ -227,3 +227,23 @@ wrapping element 는wrapped element의 updating 을 control 한다!
 🤨 **QUESTION**🤨
 
 OrderSummary 랑 Modal을  classed based component로 바꾸지 않고, 그냥 React.memo를 사용해서 optimize하면 console.log로 하듯이 그렇게 단계별 렌더링 여부를 확인할 수 없나?
+
+
+
+### 183. Using Component Lifecycle Methods
+
+`componentDidMount` or `componentDidUpdate` 는 언제 쓰는가...? : **HTTP** 를 도입하면 쓰게 됨!
+
+위 2개의 lifecycle hooks 는 (componentDidMount and componentDidUpdate) side effects 를 발생시킬 때 아주 중요하다.
+
+Side effect란? reaching out to a web service and fetching data from there 하는 것.
+
+다음 챕터에서 HTTP 가져다가 쓰면 그때 사용하게 될 것임.
+
+
+
+### 184. Changing the Folder Structure
+
+또  어떤 것들을 개선할 수 있을까?
+
+Layout은 사실 hoc 다...!
