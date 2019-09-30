@@ -1,4 +1,5 @@
-## Section8_ A Real App: The Burger Builder (Basic Version)
+Section8_ A Real App: The Burger Builder (Basic Version)
+
 ### 163) Displaying and Updating the Burger Price
 햄버거 가격을 업데이트하고 보여주는 기능을 추가해보자.
 
@@ -562,5 +563,96 @@ export default navigationItems;
 
 ### 174.  Creating a Responsive Sidedrawer
 
+Navigation 안에 포함될 SideDrawer을 만들어보자.
 
+`/Navigation/Sidedrawer/SideDrawer.js`
+
+```jsx
+import React from 'react';
+import Logo from '../../Logo/Logo'
+import NavigationItems from '../NavigationItems/NavigationItems';
+import styles from './SideDrawer.module.css'
+const sideDrawer = (props) => {
+    return (
+        <div className = {styles.SideDrawer}>
+            <Logo />
+            <nav>
+                <NavigationItems />
+            </nav>
+        </div>
+    );
+};
+
+export default sideDrawer;
+```
+
+`SideDrawer.module.css`
+
+```css
+.SideDrawer {
+    position: fixed;
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    background-color: white;
+    padding: 32px 16px;
+    box-sizing: border-box;
+    transform: transform 0.3s ease-out;
+}
+
+@media (min-width: 500px) {
+    .SideDrawer {
+        display: none;
+    }
+}
+
+.Open {
+    transform: translateX(0)
+}
+
+.Closed {
+    transform: translateX(-100%)
+}
+```
+
+미디어 쿼리를 이용해서 500px 이상일때는 안보이게, 500px 이하일때는 보이게 한다!
+
+다만 지금은 Logo나 NavigationItem을 반응형에 맞게 조절해주지 않은 상태이므로 몬생김. 이걸 수정해주자!
+
+
+
+### 175. Working on Responsive Adjustments
+
+반응형을 위해 Logo와 NavigationItems 고치기!
+
+Logo 먼저 고쳐보자. 지금은 height:80%로 되어있는데, 이건 부모 높이의 80%를 의미한다. 지금 Logo는 `Toolbar` 과 `Sidedrawer` 에 있는데 Sidebar의 80%를 차지해버리니까 로고가 너무 커진거지!
+
+
+
+**🔑 KEY TAKEAWAYS 🔑**
+
+media query를 줘서 작은화면(Sidebar)과 큰화면에 각각 다르게 height %를 줄 수도 있지만, 좀 더 reusable한 Logo를 위해서는, Logo 자체에서 크기를 조정하는 것이 아니라, **Logo를 가져다 쓰는 상위 Component에서 크기를 조정**하는 것이 좋다!
+
+`방법1`: 어떻게? Logo로 height property 값을 props로 pass해주고, Logo component에서는 inline style로 할당해주기
+
+`Logo.js`
+
+```jsx
+const logo = (props) => (
+	<div className = {styles.Logo} style = {{height : props.height}};
+)
+```
+
+`SideDrawer.js`
+
+```jsx
+<Logo height = "11%"/>
+```
+
+이렇게 해주면 Dynamic 하게 inline styles를 줄 수가 있음.
+
+`방법2` : 어떻게? Logo를 div component로 감싸고, 이 div가 height를 control 하도록 하기. div에게 inline styles를 주거나, css classes를 쓰거나 해서!
 

@@ -19,9 +19,15 @@
 }
 
 .Open {
-    transform: translateX(0)
+    transform: translateX(0);
 }
 
 .Closed {
-    transform: translateX(-100%)
+    transform: translateX(-100%);
+}
+
+.Logo {
+    height: 11%;
+    display: flex;
+    align-items: center;
 }
