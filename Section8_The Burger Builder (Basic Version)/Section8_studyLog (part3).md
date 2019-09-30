@@ -246,4 +246,6 @@ Side effect란? reaching out to a web service and fetching data from there 하�
 
 또  어떤 것들을 개선할 수 있을까?
 
-Layout은 사실 hoc 다...!
+Layout은 사실 hoc 다. 하위 컴포넌트들을 감싸서 특정 틀에 맞게 보여주는!
+따라서 src/hoc/Layout 폴더 하위로 옮겨주는 것이 좀 더 구조적으로 이상적이다.
+
