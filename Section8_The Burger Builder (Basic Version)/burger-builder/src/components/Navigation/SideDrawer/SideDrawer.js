@@ -8,7 +8,6 @@ const sideDrawer = props => {
     if(props.isOpened) {
         attachClasses = [styles.SideDrawer, styles.Open];
     }
-    console.log(attachClasses);
     return (
         <Fragment>
             <BackDrop show={props.isOpened} clicked={props.closed}/>

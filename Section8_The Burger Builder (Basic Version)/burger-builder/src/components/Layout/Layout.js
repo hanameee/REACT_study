@@ -4,20 +4,29 @@ import Toolbar from "../Navigation/Toolbar/Toolbar";
 import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
 
 class Layout extends Component {
-
     state = {
         showSideDrawer: false
-    }
+    };
+
+    sideDrawerOpenHandler = () => {
+        this.setState({ showSideDrawer: true });
+    };
 
     sideDrawerClosedHandler = () => {
-        this.setState({showSideDrawer: false});
-    }
+        console.log("clicked!")
+        this.setState(prevState => {
+            return {showSideDrawer: !prevState.showSideDrawer};
+        });
+    };
 
     render() {
         return (
             <Fragment>
-                <Toolbar />
-                <SideDrawer closed = {this.sideDrawerClosedHandler} isOpened = {this.state.showSideDrawer}/>
+                <Toolbar DrawerToggleClicked={this.sideDrawerClosedHandler} />
+                <SideDrawer
+                    closed={this.sideDrawerClosedHandler}
+                    isOpened={this.state.showSideDrawer}
+                />
                 <main className={styles.Content}>{this.props.children}</main>
             </Fragment>
         );

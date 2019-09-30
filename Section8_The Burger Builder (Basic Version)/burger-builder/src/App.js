@@ -7,7 +7,6 @@ function App() {
   return (
     <div className = {styles.App}>
       <Layout>
-        <p>say ho~~~~~</p>
         <BurgerBuilder/>
       </Layout>
     </div>
