@@ -8,7 +8,8 @@ import "./Blog.css";
 class Blog extends Component {
     state = {
         posts: [],
-        selectedPostId: null
+        selectedPostId: null,
+        errorState: false
     };
 
     componentDidMount() {
@@ -23,6 +24,11 @@ class Blog extends Component {
                     };
                 });
                 this.setState({ posts: updatedPosts });
+            })
+            .catch(error => {
+                this.setState({
+                    errorState: true
+                })
             });
     };
 
@@ -33,14 +39,18 @@ class Blog extends Component {
     };
         
     render() {
-        const posts = this.state.posts.map(post => {
-            return (
-                <Post title={post.title}
-                    author={post.author} 
-                    key={post.id} 
-                    clicked = {() => this.postSelectedHandler(post.id)}/>
-            );
-        });
+        let posts = <p style={{ textAlign: "center" }}>Something went wrong!</p>;
+
+        if(!this.state.errorState){
+            posts = this.state.posts.map(post => {
+                return (
+                    <Post title={post.title}
+                        author={post.author} 
+                        key={post.id} 
+                        clicked = {() => this.postSelectedHandler(post.id)}/>
+                );
+            });
+        }
         return (
             <div>
                 <section className="Posts">{posts}</section>
