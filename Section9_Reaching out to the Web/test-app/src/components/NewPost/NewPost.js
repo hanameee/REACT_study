@@ -18,7 +18,7 @@ class NewPost extends Component {
         }
         axios.post('/posts',post)
         .then(response => {
-            console.log(response);
+            console.log("포스팅 되었따");
         });
     }
 

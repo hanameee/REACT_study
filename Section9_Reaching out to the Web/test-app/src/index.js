@@ -24,6 +24,7 @@ let responseInterceptors = axios.interceptors.response.use(response => {
 axios.interceptors.request.eject(requestInterceptors);
 axios.interceptors.response.eject(responseInterceptors);
 
+// axios instance 사용했음!
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/';
 axios.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
