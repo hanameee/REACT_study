@@ -21,8 +21,8 @@ let responseInterceptors = axios.interceptors.response.use(response => {
    return Promise.reject(error);
 })
 
-axios.interceptors.request.eject(requestInterceptors);
-axios.interceptors.response.eject(responseInterceptors);
+// axios.interceptors.request.eject(requestInterceptors);
+// axios.interceptors.response.eject(responseInterceptors);
 
 // axios instance 사용했음!
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/';
