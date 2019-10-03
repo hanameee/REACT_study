@@ -30,7 +30,7 @@ Application state 란 = 내가 application에서 사용하고 조작할 data!
 
 ### 149. 리액트 앱 기획하기 2 - Layout and Component Tree
 
-![ image-20190908214759885](/Users/hanameee/Desktop/PROGRAMMING/REACT_study/Udemy/images/image-20190908214759885.png)
+![ image-20190908214759885](../images/image-20190908214759885.png)
 
 이렇게 root App component에서 시작해 Layout을 짜고, component tree를 구성한다!
 
