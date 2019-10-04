@@ -12,3 +12,4 @@ Backend로는 🔥 `firebase` 🔥를 사용한다!
 
 ### 206. Firebase & The Right Database
 
+Firebase 링크: https://firebase.google.com/?gclid=EAIaIQobChMIkrzmopqA5QIV2amWCh32DQPLEAAYASAAEgKltfD_BwE
