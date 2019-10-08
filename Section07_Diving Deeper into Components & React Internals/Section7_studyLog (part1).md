@@ -283,23 +283,19 @@ static getDerivedStateFromProps(props,state){
 
 이렇게까지 추가하고 서버 돌려보면 만들어둔 console.log 들이 lifecycle의 순서대로 찍히는 것을 볼 수 있다.
 
-
+g
 
 
 ### 90) Component Lifecycle - [Update for props]
 
 ![image-20190902145848216](../images/image-20190902145848216.png)
 
-Update lifecycle 을 보기 위해 persons, person component를 functional > classed-based component로 바꿀 것임!
+Update lifecycle 을 보기 위해 persons, person component를 functional > classed-based componimport 문 수정
 
-`Person.js`
-
-1. import 문 수정
-
-   ```javascript
-   import React, { Component } from "react";
+1. ```javascript
+import React, { Component } from "react";
    ```
-
+   
 2. render( ) method 추가
 
    ```javascript
