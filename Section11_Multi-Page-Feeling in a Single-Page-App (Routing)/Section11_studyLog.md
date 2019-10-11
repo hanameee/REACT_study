@@ -247,7 +247,9 @@ import { Route, Link } from 'react-router-dom';
     {/* 2. to 가 object를 받는 경우 - 좀 더 복잡한 config가 가능*/}
     <li><Link to = {{
           pathname: '/new-post',
+          // hash 이용하면 특정 page의 part로 이동하거나, scroll하는게 가능
           hash: '#submit',
+          // query params를 파싱할때 사용 가능
           search: '?/quick-submit=true'
         }}>Home</Link></li>
   </ul>
@@ -260,3 +262,67 @@ to는 간단하게는 1. string을 받거나 2. Javascript object를 받는다.
 
 이렇게 고치고 나면 링크를 클릭해도 아까처럼 페이지 전체가 re-load 되지 않는다! 👍 이렇게 Link component를 활용해서 App 내에서 navigate가 가능하다.
 
+
+
+### 225. Using Routing-Related Props
+
+Router은 props로 loaded route 에 대한 extra information을 넘겨준다. 이걸 확인해보기 위해 Posts의 componentDidMount 안에다가 console을 찍어보자!
+
+`Posts.js`
+
+```jsx
+class Posts extends Component {
+    state = {
+        posts: [],
+    };
+
+		// 이렇게 찍어줘보자!
+    componentDidMount() {
+        console.log(this.props);
+```
+
+그리고 나서  콘솔창을 보면
+
+![image-20191010220115701](../images/image-20191010220115701.png)
+
+이렇게 여러 값들이 props들로 전달된 것을 볼 수 있다.
+
+이 Props들을 가지고 query params 를 추출하거나, hash fragment로 이동하거나 기타등등에 사용할 수 있다.
+
+
+
+### 226. The "withRouter" HOC & Route Props
+
+Routing related props는 component tree를 타고 전달 되지 않는다.
+즉, 직접적으로 Route를 써서 render 된 Posts나 NewPosts의 경우 위에서 본 것 처럼 history, location, match 등의 다양한 prop들과 method들이 전달되지만, Posts 에 포함된 `Post`에 console.log(props) 를 찍어보면 해당 prop들이 전달되지 않는걸 볼 수 있다!
+
+얘들한테까지 prop을 전달해주려면 2가지 방법이 있다.
+
+1. 상위 컴포넌트에서 ...props로 전달해주기
+
+   `Posts.js`
+
+   ```jsx
+   return <Post
+            match = {...this.props.match}
+   ```
+
+2. withRouter HOC 사용하기
+
+   `Post.js`
+
+   ```jsx
+   import {withRouter} from 'react-router-dom';
+   ...
+   export default withRouter(post);
+   ```
+
+   이렇게 withRouter로 wrap해주게 되면 nearest loaded route의 prop information을 받게 된다.
+
+![image-20191011132803623](../images/image-20191011132803623.png)
+
+위의 사진처럼 각각의 post 컴포넌트들도 posts와 마찬가지로 route prop을 받는 것을 알 수 있다.
+
+
+
+### 227. Absolute vs Relative Paths
