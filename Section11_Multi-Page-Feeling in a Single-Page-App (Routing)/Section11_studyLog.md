@@ -326,3 +326,111 @@ Routing related props는 component tree를 타고 전달 되지 않는다.
 
 
 ### 227. Absolute vs Relative Paths
+
+React-route-dom 의 `Link` component를 통해 설정한 path는 항상 **absolute path** 로 간주된다.
+즉, 내가 지금 어떤 URL에 있던지와 상관 없이 base URL 의 끝에 append 된다는 것!
+
+ex) Base URL : example.com이고 내가 현재 있는 URL이 example.com/posts 라면?
+
+```jsx
+<Link to = '/new-post'>New post</Link>
+```
+
+위의 링크를 클릭하면 `example.com/posts/new-post` 로 가는게  아니라, `example.com/new-post` 로 간다는 것! 무조건 Base URL에 append 된다.
+
+만약 위의 방식처럼 absolute path가 아니라, 내 현재 path에 append 되게 하고 싶다면?
+--> 그때는 **route relative props** 를 통해 dynamic 하게 path를 설정해야 한다.
+
+```jsx
+<Link to = {{
+    pathname : this.props.match.url + '/new-post'
+  }}>New post</Link>
+```
+
+`this.props.match.url` 은 현재 내가 있는 path에 대한 정보를 가지고 있다. 따라서 저렇게 써주면 relative path로 사용할 수 있다 :)
+
+root domain 뒤에 append되는 것이 아니라 (absolute path) current path 뒤에 append 되게 하고 싶다면 위처럼 this.props.match.url 을 사용해야 한다!
+
+Object를 사용하지 않는다면 간단하게는 아래처럼 사용도 가능하다.
+
+```jsx
+<Link to={props.match.url + '/new'}>
+```
+
+
+
+### 229. Styling the Active Route
+
+지금 Active한 Link에게 추가적인 스타일링을 주고 싶다면? 
+
+기존에 사용했던 `Link` 대신, 추가적인 prop을 주는 `NavLink` 를 사용하자!
+
+`Blog.js`
+
+```jsx
+// Link 대신 NavLink를 추가해주고
+import { Route, NavLink } from 'react-router-dom';
+...
+  <nav>
+  <ul>
+    {/* 여기도 바꿔주자! */}
+    <li><NavLink to = '/'>Home</NavLink></li>
+    <li><NavLink to = {{
+          pathname: '/new-post',
+            hash: '#submit',
+              search: '?/quick-submit=true'
+        }}>New Post</NavLink></li>
+  </ul>
+</nav>
+```
+
+이렇게 Link를 NavLink로 수정해주면, 아래처럼 추가적인 prop들이 생긴 것을 볼 수 있고 특히 `class="active"` 가 생겼다!
+
+![image-20191011141441907](../images/image-20191011141441907.png)
+
+이걸 바탕으로 active한 녀석한테 styling을 줄 수 있겠지.
+
+`Blog.css`
+
+```css
+.Blog a:hover,
+.Blog a:active,
+.Blog a.active {
+    color: #fa923f;
+}
+```
+
+⚠️ **조심!** 단, 위처럼 하면 home과 new post 모두에 styling이 입혀지는데, 이건 앞서 말했듯 Link to 에 `exact` 값을 true로 주지 않으면 해당 path가 prefix인 모든 link에 대해 속성이 해당되기 때문!
+
+따라서 정확한 path가 root일때만 styling을 주고 싶다면 아래처럼 exact를 꼭 써줘야 한다.
+
+```jsx
+<li><NavLink to = '/' exact>Home</NavLink></li>
+```
+
+- activeClassName
+
+추가적으로, 만약 class 이름을 default인 active가 아니라 내 맘대로 커스텀해서 주고 싶다면?
+
+```jsx
+<ul>
+  {/* 여기도 바꿔주자! */}
+  <li><NavLink to = '/' exact activeClassName = 'my-active'>Home</NavLink></li>
+```
+
+이렇게 activeClassName 을 활용하면 됨.
+
+- activeStyle
+
+activeStyle 을 활용한 lnline styling 도 가능함!
+
+```jsx
+<li><NavLink to = '/' 
+      			 exact 
+      			 activeClassName = 'active'
+      			 activeStyle = {{
+      					color : '#fa923f', 
+                textDecoration: 'underline'}}>Home</NavLink></li>
+
+```
+
