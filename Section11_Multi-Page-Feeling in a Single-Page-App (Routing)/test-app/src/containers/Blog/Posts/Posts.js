@@ -31,21 +31,21 @@ class Posts extends Component {
             });
     };
     postSelectedHandler = (id) => {
-        this.setState({
-            selectedPostId : id
-        })
+        this.props.history.push({pathname: '/' + id});
+        // this.props.history.push('/'+id);
     };
+    
     render() {
         let posts = <p style={{ textAlign: "center" }}>Something went wrong!</p>;
         if(!this.state.errorState){
             posts = this.state.posts.map(post => {
                 return (
-                    <Link to = {'/' + post.id} key = {post.id}>
+                    //<Link to = {'/' + post.id} key = {post.id}>
                         <Post title={post.title}
                             author={post.author} 
                             key={post.id} 
                             clicked = {() => this.postSelectedHandler(post.id)}/>
-                    </Link>
+                    //{</Link>}
                 );
             });
         }
