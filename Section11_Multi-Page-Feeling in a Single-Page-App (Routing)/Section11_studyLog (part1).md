@@ -582,5 +582,90 @@ React router makes it easy to extract the fragment. You can simply access `props
 
 ### 233. Using Switch to Load a Single Route
 
-231에서 발생한 issue를 수정해보자!
+231에서 발생한 issue를 수정해보자! (NewPost 밑에  FullPost가 눈치없이 떠버리는 것 😒)
 
+![image-20191011172443627](../images/image-20191011172443627.png)
+
+이 문제는  `Blog.js` 때문에 발생한 것.
+
+**🔑KEY TAKEAWAYS🔑**
+
+ALL ROUTES ARE RENDERED IF THEY MATCH THE PATH!
+
+```jsx
+<Route path = '/' exact component = {Posts} />
+<Route path = '/new-post' component = {NewPost}/>
+<Route path = '/:post_id' component = {FullPost}/>
+```
+
+dynamic 하게 path를 설정하기 위해 사용한 `:post_id` 가 new-post로 인식되는 것! 즉, Router 입장에서는 `http://localhost:3000/new-post?/quick-submit=true#submit` 라는 URL이 
+
+```jsx
+<Route path = '/:post_id' component = {FullPost}/>
+```
+
+이걸 만족한다고 생각하는 것! 얘들은 post_id가 숫자인지 뭔지 모르니깐.
+
+이걸 해결하려면?
+
+**1) Route를 명시적으로 변경해준다**
+
+`blog.js`
+
+```jsx
+<Route path = '/posts/:post_id' component = {FullPost}/>
+```
+
+`Posts.js`
+
+```jsx
+return (
+  <Link to = {'/posts/' + post.id} key = {post.id}>
+```
+
+이렇게 바꿔주면 각 post를 클릭했을때 링크가 `http://localhost:3000/posts/1` 이렇게 뜨면서 문제가 해결된다!
+
+ **2) Route를 그대로 사용하고 싶다면?**
+
+react-router-dom이 제공하는 Switch component를 사용!
+
+Switch로 route들을 Wrap 해주면, 주어진 route의 set 들 중에서 처음으로 match하는 하나의 route만 load하도록 해줄 수 있다.
+
+`Blog.js`
+
+```jsx
+import { Route, NavLink, Switch } from 'react-router-dom';
+...
+ <Switch>
+  <Route path = '/' exact component = {Posts} />
+  <Route path = '/new-post' component = {NewPost}/>
+  {/* <Route path = '/posts/:post_id' component = {FullPost}/> */}
+  <Route path = '/:post_id' component = {FullPost}/>
+</Switch>
+```
+
+⚠️ 주의 : `<Switch>를 사용할 경우 route의 순서가 중요하다`
+
+```jsx
+ <Switch>
+  <Route path = '/' exact component = {Posts} />
+  <Route path = '/:post_id' component = {FullPost}/>
+  <Route path = '/new-post' component = {NewPost}/>
+</Switch>
+```
+
+만약 위처럼 new-post를 밑에다가 두면 new-post까지 가기도 전에 :post_id로 match되어 NewPost는 절대 render되지 않겠지!
+
+
+
+Switch를 쓰까 쓸 수도 있다.
+
+```jsx
+<Route path = '/' exact component = {Posts} />
+<Switch>
+  <Route path = '/:post_id' component = {FullPost}/>
+  <Route path = '/new-post' component = {NewPost}/>
+</Switch>
+```
+
+이렇게 쓰면 Switch 밖에 있는 애는 항상 analyzed 되고, Switch 안에 있는 애들은 꼭 1개만 load 된다!
