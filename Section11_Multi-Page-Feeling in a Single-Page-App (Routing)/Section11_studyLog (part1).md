@@ -434,3 +434,153 @@ activeStyle 을 활용한 lnline styling 도 가능함!
 
 ```
 
+
+
+### 230. Passing Route Parameters
+
+이제 개별 post를 클릭하면 해당 Post의 상세페이지(= FullPost) 가 뜨도록 수정해보자!
+
+`Posts.js`
+
+```jsx
+return (
+  <Post title={post.title}
+    author={post.author} 
+    key={post.id} 
+    clicked = {() => this.postSelectedHandler(post.id)}/>
+);
+```
+
+Post는 각각 id를 가지고 있다. 이 id를 파라미터로 받아서 URL로 넘겨줘서 알맞은 post를 렌더링하면 되지 않을까!
+
+Route에게 dynamic parameter을 넘겨주기 위해선 `:어쩌고` 를 사용하면 된다. 이게 바로 Route Parameter!
+
+```jsx
+<Route path = '/:post_id' component = {Posts} />
+```
+
+`Post.js`
+
+개별 Post를 클릭했을 때 해당 id로 URL을 넘겨주기 위해서는 Post component를 Link 태그로 감싸주면 된다!
+
+```jsx
+if(!this.state.errorState){
+  posts = this.state.posts.map(post => {
+    return (
+      <Link to = {'/' + post.id} key = {post.id}>
+        <Post title={post.title}
+          author={post.author} 
+          key={post.id} 
+          clicked = {() => this.postSelectedHandler(post.id)}/>
+      </Link>
+```
+
+
+
+### 231. Extracting Route Parameters
+
+아까 route path를 활용해 dynamic하게 post_id를 넘겼다. 이걸 확인하기 위해 개발자도구를 보면
+
+![image-20191011170530519](../images/image-20191011170530519.png)
+
+이렇게 match의 params로 post_id가 넘어오고 있는 것을 볼 수 있다!
+그럼 `this.props.match.params.post_id` 로 id 값에 접근할 수 있겠지 :)
+
+`FullPost.js`
+
+componentDidMount를 아래처럼 수정해줍시다.
+
+```react
+componentDidMount() {
+  if(this.props.match.params.post_id && (!this.state.loadedPost || this.props.match.params.post_id !== this.state.loadedPost.id)) {
+    axios
+      .get(
+      "/posts/" +
+      this.props.match.params.post_id
+    )
+      .then(response => {
+      const post = response.data;
+      console.log("[Fullpost] New post Loaded!")
+      this.setState({
+        loadedPost: post
+      });
+    });
+  }
+}
+```
+
+이제 Post를 클릭하면 정상적으로 FullPost가 뜬다! 근데 NewPost를 클릭해도 밑에 FullPost가 뜨고 난리다! 이건 왜이럴까? :)
+
+
+
+### 232. Parsing Query Parameters & the Fragment
+
+You learned how to extract route parameters (=> `:id`  etc). 
+
+But how do you extract **search** (also referred to as "**query**") **parameters** (=> `?something=somevalue`  at the end of the URL)? How do you extract the **fragment** (=> `#something`  at the end of the URL)?
+
+#### **Query Params:**
+
+You can pass them easily like this:
+
+```
+<Link to="/my-path?start=5">Go to Start</Link>
+```
+
+or
+
+```jsx
+<Link 
+    to={{
+        pathname: '/my-path',
+        search: '?start=5'
+    }}
+    >Go to Start</Link>
+```
+
+React router makes it easy to get access to the search string: `props.location.search` .
+
+But that will only give you something like `?start=5` 
+
+You probably want to get the key-value pair, without the `?`  and the `=` . Here's a snippet which allows you to easily extract that information:
+
+```jsx
+componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+    for (let param of query.entries()) {
+        console.log(param); // yields ['start', '5']
+    }
+}
+```
+
+`URLSearchParams`  is a built-in object, shipping with vanilla JavaScript. It returns an object, which exposes the `entries()`  method. `entries()`  returns an Iterator - basically a construct which can be used in a `for...of...`  loop (as shown above).
+
+When looping through `query.entries()` , you get **arrays** where the first element is the **key name** (e.g. `start` ) and the second element is the assigned **value** (e.g. `5` ).
+
+#### **Fragment:**
+
+You can pass it easily like this:
+
+```
+<Link to="/my-path#start-position">Go to Start</Link>
+```
+
+or
+
+```
+<Link 
+    to={{
+        pathname: '/my-path',
+        hash: 'start-position'
+    }}
+    >Go to Start</Link>
+```
+
+React router makes it easy to extract the fragment. You can simply access `props.location.hash` .
+
+
+
+### 233. Using Switch to Load a Single Route
+
+231에서 발생한 issue를 수정해보자!
+
