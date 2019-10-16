@@ -54,3 +54,37 @@ render() {
 이렇게 써주면 Link로 감쌌을 때와 동일하게 작동하는 것을 알 수 있다.
 
 Link 가 아니라 handler을 이용해 이렇게 programatically 하게 navigate하는 방식은 어떤 operation이 끝나고 나서 navigate 해야 하는 경우에 사용하면 좋다!
+
+
+
+### 236. Understanding Nested Routes
+
+지금은 blog 컴포넌트 안에서 routing을 통해 컴포넌트들을 불러오고 있다. (**one-level routing**)
+하지만, 그 component 안에서 또 certain component나 content를 라우팅을 통해 return하고 싶을 수도 있지!  (**Nested Routing**)
+
+이제 각각의 개별 Post 들을 Blog 말고 Posts 에서 return 해보자.
+
+`Posts.js`
+
+```react
+import Route from 'react-route-dom'
+...
+
+return (
+  //div로 감싸고
+  <div>
+    <section className="Posts">
+      {posts}
+    </section>
+    {/* posts 밑에 원래 Blog에 있던 post 라우팅 코드를 넣어준다! */}
+    <Route path = '/:post_id' component = {FullPost}/>
+  </div>
+)
+```
+
+또한, 링크를 dynamic 하게 바꿔주기 위해 현재 있는 url 값을 가지고 있는 `this.props.match.url` 을 사용한다.
+
+```react
+<Route path = {this.props.match.url + '/:post_id'} component = {FullPost}/>
+```
+

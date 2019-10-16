@@ -14,7 +14,7 @@ class Blog extends Component {
                 <header>
                     <nav>
                         <ul>
-                            <li><NavLink to = '/' exact activeClassName = 'active' activeStyle = {{color : '#fa923f', textDecoration: 'underline'}}>Home</NavLink></li>
+                            <li><NavLink to = '/posts' exact activeClassName = 'active' activeStyle = {{color : '#fa923f', textDecoration: 'underline'}}>Posts</NavLink></li>
                             <li><NavLink to = {{
                                 pathname: '/new-post',
                                 hash: '#submit',
@@ -24,10 +24,9 @@ class Blog extends Component {
                     </nav>
                 </header>
                 <Switch>
-                    <Route path = '/' exact component = {Posts} />
                     <Route path = '/new-post' component = {NewPost}/>
+                    <Route path = '/posts' component = {Posts} />
                     {/* <Route path = '/posts/:post_id' component = {FullPost}/> */}
-                    <Route path = '/:post_id' component = {FullPost}/>
                 </Switch>
                  {/* <section>
                     <FullPost id = {this.state.selectedPostId}/>
