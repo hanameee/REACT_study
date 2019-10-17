@@ -88,3 +88,78 @@ return (
 <Route path = {this.props.match.url + '/:post_id'} component = {FullPost}/>
 ```
 
+
+
+### 237. Creating Dynamic Nested Routes
+
+지금 다른 post 클릭해도 URL만 바뀌고 component 로드가 안된다. 왜일까?
+
+React router 의 작동 방식 때문인데, 이미 내가 있는 component 는 다시 load하지 않는다. 이미 만들어져있는데 왜 다시 reload를 하겠슈...? `FullPost` 의 componentDidMount 자체가 실행되지 않는거야!
+
+component 자체는 바뀐게 없으니까 re-load가 안되고, 따라서 서버에 요청도 다시 안가고. 그런거지.
+
+그래서 우리가 써야 하는건 `componentDidUpdate` hook이다! 이건 실행이 되니깐.
+기존에 웹서버에 요청하는 axios 코드를 loadData라는 함수로 분리하고, 이걸 componentDidMount와 componentDidUpdate에서 둘다 실행한다.
+
+```js
+componentDidMount() {
+  this.loadData();
+}
+
+componentDidUpdate() {
+  console.log("FullPost: update!")
+  this.loadData();
+}
+
+loadData() {
+  if(this.props.match.params.id) {
+    if(!this.state.loadedPost || (this.state.loadedPost && (this.props.match.params.id != this.state.loadedPost.id))) {
+      console.log(this.props.match.params.id + "이고요");
+      axios
+        .get(
+        "/posts/" +
+        this.props.match.params.id
+      )
+        .then(response => {
+        const post = response.data;
+        console.log("[Fullpost] New post Loaded!")
+        this.setState({
+          loadedPost: post
+        });
+        console.log(this.state.loadedPost.id + "입니다")
+      });
+    }
+  }
+}
+
+deletePostHandler = () => {
+  axios
+    .delete("/posts/" + this.props.match.params.id)
+    .then(response => {
+    console.log(response);
+  })
+}
+```
+
+
+
+**🤔QUESTION🤔**
+아니 대체 왜 loadData 에서
+
+```js
+if(!this.state.loadedPost || (this.state.loadedPost && (this.props.match.params.id != this.state.loadedPost.id)))
+```
+
+`=!` 로 안하고 `==!` 로 하면 (강의에서는 ==! 씀) 무한 요청이 가는거지? 엉엉...울고 싶다...
+는 강의를 조금 더 들으면 답이 나온답니다! 짜잔! 좋은 삽질이었다!
+
+![이용대 짜잔](http://bizon.kookmin.ac.kr/files/editor/1442382140703.png)
+
+`this.props.match.params.id` 얘의 자료형은 **STRING** 문자열이고, `this.state.loadedPost` 의 자료형은 **NUMBER** 이기 때문이다!
+
+`!==` 은 값 뿐만 아니라 type equality까지 check하기에 당연히 false를 리턴하고 매번 loadData() 가 실행되어 무한 request가 갔던 것.
+
+**🔑SOLUTION🔑**
+
+string을 ID로 바꾸거나 (matching 식에 쓰일때 앞에 +를 붙여서), 연산자를  `!=` 로 바꿔서 값만 check 하거나!
+
