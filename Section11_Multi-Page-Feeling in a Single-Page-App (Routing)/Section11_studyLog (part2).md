@@ -163,3 +163,30 @@ if(!this.state.loadedPost || (this.state.loadedPost && (this.props.match.params.
 
 string을 ID로 바꾸거나 (matching 식에 쓰일때 앞에 +를 붙여서), 연산자를  `!=` 로 바꿔서 값만 check 하거나!
 
+
+
+### 238. Redirecting Requests
+
+redirect 시키고 싶을 때가 있지. 만약 `/` URL로 접속했을 때 자동으로 `/posts` 로 redirect 시키고 싶다면?
+
+물론 아래처럼 기존의 rule대로 Route를 추가해주는 방법도 있지만
+
+```jsx
+<Route path = '/' component = {Posts} />
+```
+
+react-router-dom이 제공하는 **Redirect** 컴포넌트를 사용하는 방법도 있다!
+
+```jsx
+import { Route, NavLink, Switch, Redirect} from 'react-router-dom';
+...
+  <Switch>
+  <Route path = '/new-post' component = {NewPost}/>
+  <Route path = '/posts' component = {Posts} />
+  {/* /경로로 접속하면 /posts로 리다이렉트! */}
+  <Redirect from = '/' to = '/posts'/>
+</Switch>
+```
+
+단, 이렇게 from을 명시해주는 것은 Switch 문 안에서만 가능하고 Switch 문 밖에서는 conditional redirect 를 사용해야 한다. 이건 다음 강의에서!
+
