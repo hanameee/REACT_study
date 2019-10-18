@@ -190,3 +190,61 @@ import { Route, NavLink, Switch, Redirect} from 'react-router-dom';
 
 단, 이렇게 from을 명시해주는 것은 Switch 문 안에서만 가능하고 Switch 문 밖에서는 conditional redirect 를 사용해야 한다. 이건 다음 강의에서!
 
+
+
+### 239. Conditional Redirects
+
+`NewPost.js` 에서 새로운 포스트 작성 버튼 누르고 나서 Redirect를 시켜보자!
+
+⚠️ Redirect를 `<Switch>` 안에서 쓰는 것이 아니라면 `from` 속성을 쓸 수 없다! **to 만 쓸 수 있음**.
+
+아래와 같은 Redirection code를 추가하되, 이것도 어디까지나 하나의 컴포넌트에 불과하므로 이걸 conditional 하게만 리턴하면 되지롱!
+
+```jsx
+<Redirect to = "/posts"/>
+```
+
+`NewPost.js`
+
+```jsx
+state = {
+  title: '',
+  content: '',
+  author: 'Max',
+  // state에 submitted 를 추가해주고
+  submitted: false
+}
+
+...
+
+    postDataHandler = () => {
+        const post = {
+            title : this.state.title,
+            body : this.state.content,
+            author : this.state.author
+        }
+        axios.post('/posts',post)
+        .then(response => {
+            console.log("포스팅 되었따");
+          	// HTTP 요청을 보내고 나서 submitted state를 true로 바꿔준다!
+            this.setState({
+                submitted: true
+            })
+        });
+    }
+
+    render () {
+      	// 처음에 redirect 변수를 null로 정의
+        let redirect = null;
+      	// submitted가 true라면
+        if (this.state.submitted) {
+          	// redirect는 해당 jsx (Redirect하는 코드)
+            redirect =  <Redirect to = "/posts"/>;
+        }
+        return (
+            <div className="NewPost">
+            		{/* 얘는 null 아니면 redirection code겠지! */}
+                {redirect}
+```
+
+page를 떠나기 위해 Redirect component를 render 하는 느낌!
