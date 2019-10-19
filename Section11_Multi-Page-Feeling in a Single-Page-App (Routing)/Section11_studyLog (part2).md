@@ -248,3 +248,73 @@ state = {
 ```
 
 page를 떠나기 위해 Redirect component를 render 하는 느낌!
+
+
+
+### 240. Using the History Prop to Redirect (Replace)
+
+직전 강의에서 NewPost 를 direct 하던 방식 (this.setState를 사용해 component를 redirect 하는 방법 보다, BrowserRouter이 제공하는 history prop을 사용하는 것이 조금 더 많이 쓰이는 방법!
+
+`App.js`
+
+```react
+<BrowserRouter>
+  <div className = "App">
+  	<Blog />
+  </div>
+</BrowserRouter>
+```
+
+Blog 역시 BrowserRouter 안에 감싸져 있고, NewPost는 당연히 Blog를 통해 rendering 되니 `match` `location` `history` 와 같은 prop들을 사용할 수 있다.
+
+특히, history prop은 여러 method들을 가지고 있는데 대표적으로는
+
+- replacing the current route
+- pushing a new route
+
+들이 있다. 이걸 사용해보자!
+
+`NewPost.js`
+
+```react
+    postDataHandler = () => {
+        const post = {
+            title : this.state.title,
+            body : this.state.content,
+            author : this.state.author
+        }
+        axios.post('/posts',post)
+        .then(response => {
+            console.log("포스팅 되었따");
+          	// 이렇게 적어준당
+            this.props.history.push('/posts')
+        });
+    }
+```
+
+push는 new page를 stack에 집어넣는다. 따라서 back 버튼을 누르면 직전 페이지인 new post로 되돌아간다.
+하지만 redirect는 현재 page를 new post로 replace한다. 따라서 back 버튼을 누른다고 new post로 되돌아가지지 않는다!
+
+```react
+    postDataHandler = () => {
+        const post = {
+            title : this.state.title,
+            body : this.state.content,
+            author : this.state.author
+        }
+        axios.post('/posts',post)
+        .then(response => {
+            console.log("포스팅 되었따");
+          	this.props.history.replace('/posts');
+          	// replace를 사용하면 setState로 redirect를 렌더하던 이전 코드와 동일!
+        });
+    }
+```
+
+
+
+정리하자면, 어떤 연산이 끝난 후 page를 변경하고 싶다면 2가지 방법이 있다!
+
+(1) Redirect component를 조건적으로 rendering하고 싶으면 239에서 배운 방법을
+(2) 그게 아니라면 history prop의 replace나 push method를 쓸 수 있다!
+
