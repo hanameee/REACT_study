@@ -318,3 +318,57 @@ push는 new page를 stack에 집어넣는다. 따라서 back 버튼을 누르면
 (1) Redirect component를 조건적으로 rendering하고 싶으면 239에서 배운 방법을
 (2) 그게 아니라면 history prop의 replace나 push method를 쓸 수 있다!
 
+
+
+### 241.  Working with Guards
+
+Navigation Guards 에 대해 알아보자!
+
+Application에서 특정 route의 경우, authenticated 된 user만 visit 할 수 있게 하고 싶을 수 있다. 이럴때 쓰이는게 navigation guard.
+
+React router에서는 요 guard를 조금 다르게 생각해야 함니다. 2가지 방법이 있다.
+
+1. Auth state에 따라 해당 route 페이지를 conditional 하게 render 하기
+2. guarded 된 페이지의 componentDidMount에서 unauth라면 redirect 하기
+
+[방법 1의 경우]
+
+`Blog.js`
+
+```jsx
+class Blog extends Component {
+    state = {
+      	// auth state를 추가해주고!
+        auth : false
+    }
+
+...
+
+  <Switch>
+  {/* auth state에 따라 conditional 하게 new-post를 렌더링! */}
+  {this.state.auth ? <Route path = '/new-post' component = {NewPost}/> : null}
+  <Route path = '/posts' component = {Posts} />
+  {/* auth false인 상태라면 /new-post 를 눌러도 / prefix에 걸려서 redirect 될 것임*/}
+  <Redirect from = '/' to = '/posts'/>
+</Switch>
+```
+
+[방법 2의 경우]
+
+`NewPost.js`
+
+```jsx
+componentDidMount() {
+  // if unAuth => this.props.history.replace('/posts')
+  console.log(this.props);
+}
+```
+
+요런 로직을 넣어줄 수 있겠지 :)
+
+**🔑KEY TAKEAWAY🔑**
+
+방법 1에서, `Route path = '/new-post'`  라는 정의가 rendered 되지 않았으므로, 이 route definition에 연결된 component는 더더욱 rendered 될 수 없는 것. 
+
+중요하다!
+
