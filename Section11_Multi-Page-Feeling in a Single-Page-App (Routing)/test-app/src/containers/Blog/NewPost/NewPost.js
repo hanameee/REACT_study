@@ -9,10 +9,11 @@ class NewPost extends Component {
         title: '',
         content: '',
         author: 'Max',
-        submitted: false
+        submitted: false,
     }
 
     componentDidMount() {
+        // if unAuth => this.props.history.replace('/posts')
         console.log(this.props);
     }
 

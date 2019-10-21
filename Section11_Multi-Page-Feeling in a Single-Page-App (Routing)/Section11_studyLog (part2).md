@@ -372,3 +372,31 @@ componentDidMount() {
 
 중요하다!
 
+
+
+### 242. Handling the 404 case (Unknown Routes)
+
+ `Blog.js`
+
+지금은 어떠한 unknown route 들도 다 '/' prefix에 잡혀 {Posts} 로 연결될 것임!
+
+```jsx
+<Route path = "/" component = {Posts} />
+```
+
+위의 코드를 주석처리하고, unknown route를 핸들링 할 수 있는 다른 방법을 알아보자.
+
+```jsx
+<Route render = {() => <h1>NOT FOUND</h1>}/>
+```
+
+이렇게 path 속성을 주지 않고 컴포넌트를 리턴하거나, render 을 하면 앞에서 handle 되지 않은 route를 다 catch 할 것임! 순서가 중요함. 항상 마지막에 쓰여야겠지 :) 
+
+또한, 위의 코드는 redirect와는 같이 쓰이지 못한다!
+
+```jsx
+<Redirect from = "/" to ="/posts" />
+```
+
+redirect는 `/` 로 시작하는 모든 루트를 catch해서 posts 로 redirect 해버릴 것이기 때문에!
+
